@@ -5,7 +5,7 @@
     "author": "Marco <marc.olivier.gagnon.4@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "start": "node server.js",
+        "start": "node ./dist/server.js",
         "build": "npm run build-ts && npm run lint",
         "build-ts": "tsc",
         "watch-ts": "tsc -w",
@@ -32,7 +32,6 @@
         "eslint-config-prettier": "^6.2.0",
         "eslint-plugin-prettier": "^3.1.0",
         "jest": "^24.9.0",
-        "mime": "^2.4.4",
         "prettier": "^1.18.2",
         "supertest": "^4.0.2",
         "ts-jest": "^24.0.2",
