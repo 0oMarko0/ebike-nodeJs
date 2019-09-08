@@ -1,3 +1,13 @@
+interface Point {
+    latitude: number;
+    longitude: number;
+}
+
+interface GeoPointModel {
+    type: string;
+    coordinates: Point;
+}
+
 export default class GeoPoint {
     latitude: number;
     longitude: number;
@@ -9,7 +19,7 @@ export default class GeoPoint {
         this.type = "GeoPoint";
     }
 
-    get toModel() {
+    get toModel(): GeoPointModel {
         return {
             type: this.type,
             coordinates: { latitude: this.latitude, longitude: this.longitude },
