@@ -44,12 +44,15 @@ In order to debug in webstorm you need to start the command `npm run watch-ts` t
 Once that command is running you need to add a Node configuration.
 
 1. Click on ADD CONFIGURATION
+
 ![add-config](https://test-de-test.s3.amazonaws.com/Screenshot+from+2019-09-08+17-31-36.png)
+
 2. Click on the + and add a new nodeJs config. The configuration should look like this
+
 ![config](https://test-de-test.s3.amazonaws.com/Screenshot+from+2019-09-08+17-27-51.png)
 
 Once it's done you should be good to go. It's also possible to start the server with this configuration.
 
-
-The base for this project was inspire by https://github.com/microsoft/TypeScript-Node-Starter.
+---
+The structure of the project was inspire by https://github.com/microsoft/TypeScript-Node-Starter.
 
