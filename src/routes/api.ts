@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/heartbeat", (req, res) => {
     res.send({
-        nb_restaurants: 123,
+        nb_restaurants: 121,
         total_path_length: 420,
     }).status(200);
 });
