@@ -7,13 +7,13 @@ const expect = chai.expect;
 describe("GET /api/heartbeat", () => {
     const HEART_BEAT_ROUTE = "/api/heartbeat";
 
-    it("/heartbeat should return 200 OK", () => {
+    it("should return 200 OK", () => {
         request(app)
             .get(HEART_BEAT_ROUTE)
             .expect(200);
     });
 
-    it("/heartbeat should have a valid response", () => {
+    it("should have a valid response", () => {
         request(app)
             .get(HEART_BEAT_ROUTE)
             .expect(200)
@@ -24,6 +24,12 @@ describe("GET /api/heartbeat", () => {
     });
 });
 
-describe("GET /api/heartbeat", () => {
+describe("GET /api/readme", () => {
+    const README_ROUTE = "/api/readme";
 
+    it("should return 200 OK", () => {
+        request(app)
+            .get(README_ROUTE)
+            .expect(200);
+    });
 });
