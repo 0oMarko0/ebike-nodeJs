@@ -3,7 +3,6 @@ import UserController from "../../src/controller/user-controller";
 import Registry from "../../src/utils/registry";
 import { Injectable } from "../../src/utils/injectable";
 import DependencyInjection from "../../src/utils/dependency-injection";
-import MongoDB from "../../src/data/database/mongo";
 
 const expect = chai.expect;
 
@@ -20,7 +19,6 @@ describe("UTILS Dependency Injection", () => {
     describe("Repo", () => {
         beforeEach(() => {
             di = new DependencyInjection();
-            di.setDatabase(MongoDB.getDb());
         });
 
         it("should resolve a service", () => {

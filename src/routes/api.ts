@@ -6,7 +6,6 @@ import { Injectable } from "../utils/injectable";
 import { check } from "express-validator";
 import User from "../model/user";
 import logger from "../utils/logger";
-import AuthMiddleware, { AuthRequest } from "../middleware/authentication";
 
 const router = express.Router();
 
@@ -57,12 +56,6 @@ router.post(
         }
     },
 );
-
-router.get("/secured", AuthMiddleware ,(req: AuthRequest, res: Response) => {
-   res.send({protected: req.test});
-});
-
-router.post("/logout", async (req, res) => {});
 
 const toUser = (req: Request): User => {
     return {

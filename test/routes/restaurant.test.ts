@@ -7,14 +7,14 @@ const expect = chai.expect;
 describe("GET /restaurant/type", () => {
     const RESTAURENT_TYPE_ROUTE = "/restaurant/type";
 
-    it("should return 200 OK", async () => {
-        request(await app)
+    it("should return 200 OK",() => {
+        request( app)
             .get(RESTAURENT_TYPE_ROUTE)
             .expect(200);
     });
 
-    it("should have a valid response", async () => {
-        request(await app)
+    it("should have a valid response",() => {
+        request(app)
             .get(RESTAURENT_TYPE_ROUTE)
             .expect(200)
             .end((err, res) => {

@@ -5,6 +5,7 @@ import moment = require("moment");
 
 export default class Repo {
     private collection: Collection;
+
     constructor(collection: string) {
         this.collection = MongoDB.getDb().collection(collection);
     }
@@ -13,12 +14,12 @@ export default class Repo {
         return this.collection;
     }
 
-    async create(document: any): Promise<ObjectId> {
+    async create(document: any): Promise<string> {
         Object.assign(document, { created: moment().unix() });
         const result = await this.collection.insertOne(document);
         if (!result.insertedId) throw new Error(`Unable to insert document ${document}`);
 
-        return result.insertedId;
+        return result.insertedId.toString();
     }
 
     async getById(id: string, projection?: any, customAggregation?: any) {
@@ -33,7 +34,11 @@ export default class Repo {
         if (_.isArray(customAggregation) && !_.isEmpty(customAggregation)) {
             aggregation.push(...customAggregation);
         }
-        aggregation.push(projection);
+
+        if (projection) {
+            // @ts-ignore
+            aggregation.push({ $project: projection });
+        }
         return this.collection.aggregate(aggregation).next();
     }
 

@@ -1,5 +1,4 @@
 import { Express } from "express";
-import userRoute from "./user";
 import apiRoute from "./api";
 import restaurantRoute from "./restaurant";
 import journeyRoute from "./journey";

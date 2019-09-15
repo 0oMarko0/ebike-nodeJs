@@ -7,14 +7,14 @@ const expect = chai.expect;
 describe("GET /journey/starting-point", () => {
     const STARTING_POINT_ROUTE = "/journey/starting-point";
 
-    it("should return 200 OK", async () => {
-        request(await app)
+    it("should return 200 OK",() => {
+        request(app)
             .get(STARTING_POINT_ROUTE)
             .expect(200);
     });
 
-    it("should have a valid response", async () => {
-        request(await app)
+    it("should have a valid response", () => {
+        request(app)
             .get(STARTING_POINT_ROUTE)
             .expect(200)
             .end((err, res) => {

@@ -12,6 +12,8 @@ export default class UserRepo extends Repo {
 
         const aggregate = [{ $match: query }];
 
-        return this.getCollection().aggregate(aggregate).next();
+        return this.getCollection()
+            .aggregate(aggregate)
+            .next();
     }
 }
