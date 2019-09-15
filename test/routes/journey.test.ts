@@ -7,7 +7,7 @@ const expect = chai.expect;
 describe("GET /journey/starting-point", () => {
     const STARTING_POINT_ROUTE = "/journey/starting-point";
 
-    it("should return 200 OK", () => {
+    it("should return 200 OK",() => {
         request(app)
             .get(STARTING_POINT_ROUTE)
             .expect(200);
