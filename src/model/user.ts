@@ -3,4 +3,4 @@ export default interface User {
     password?: string;
     id?: string;
     isAdmin?: boolean;
-};
+}
