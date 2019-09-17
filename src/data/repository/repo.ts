@@ -25,7 +25,7 @@ export default class Repo {
     async getById(id: string, projection?: any, customAggregation?: any) {
         const query = { _id: this.toObjectId(id) };
 
-        const aggregation = [
+        const aggregation: any = [
             {
                 $match: query,
             },
@@ -36,7 +36,6 @@ export default class Repo {
         }
 
         if (projection) {
-            // @ts-ignore
             aggregation.push({ $project: projection });
         }
         return this.collection.aggregate(aggregation).next();
