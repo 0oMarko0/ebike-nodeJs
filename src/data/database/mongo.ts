@@ -1,7 +1,7 @@
 import { Db, MongoClient } from "mongodb";
 import logger from "../../utils/logger";
 
-export const MONGO_URL = process.env.MOGO_URL;
+export const MONGO_URL = process.env.MONGO_URL;
 export const DATA_BASE_NAME = "ebike";
 
 export default class MongoDB {

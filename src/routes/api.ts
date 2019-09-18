@@ -9,6 +9,13 @@ import logger from "../utils/logger";
 
 const router = express.Router();
 
+const toUser = (req: Request): User => {
+    return {
+        email: req.body.email,
+        password: req.body.password,
+    };
+};
+
 router.get("/heartbeat", (req, res) => {
     res.send({
         nb_restaurants: 121,
@@ -42,7 +49,7 @@ router.post(
 router.post(
     "/signin",
     [
-        check("email", "Must be a valid Email").isEmail(),
+        check("email", "Must be a valid email").isEmail(),
         check("password", "Must be longer than 6 character").isLength({ min: 6 }),
     ],
     async (req: Request, res: Response) => {
@@ -50,18 +57,10 @@ router.post(
         try {
             res.status(200).send(await userController.signInUser(toUser(req)));
         } catch (e) {
-           logger.error(e.message);
-           res.status(400).send(e.message);
-
+            logger.error(e.message);
+            res.status(400).send(e.message);
         }
     },
 );
-
-const toUser = (req: Request): User => {
-    return {
-        email: req.body.email,
-        password: req.body.password,
-    };
-};
 
 export default router;

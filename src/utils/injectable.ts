@@ -1,12 +1,12 @@
 const repo = {
-  UserRepo: "UserRepo"
+    UserRepo: "UserRepo",
 };
 
 const controller = {
-  UserController: "UserController"
+    UserController: "UserController",
 };
 
 export const Injectable = {
-  ...repo,
-  ...controller,
+    ...repo,
+    ...controller,
 };

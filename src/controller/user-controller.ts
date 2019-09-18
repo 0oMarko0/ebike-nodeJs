@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import UserRepo from "../data/repository/user-repo";
 import User from "../model/user";
 import { Token } from "./controller";
@@ -15,7 +15,7 @@ export default class UserController {
         if (retrievedUser && bcrypt.compareSync(user.password, retrievedUser.password)) {
             return this.createToken(user);
         } else {
-            throw new Error("The password or the Email are invalid");
+            throw new Error("The password or the email are invalid");
         }
     }
 
