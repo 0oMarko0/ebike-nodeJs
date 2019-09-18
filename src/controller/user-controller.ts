@@ -15,7 +15,7 @@ export default class UserController {
         if (retrievedUser && bcrypt.compareSync(user.password, retrievedUser.password)) {
             return this.createToken(user);
         } else {
-            throw new Error("The password or the Email are invalid");
+            throw new Error("The password or the email are invalid");
         }
     }
 
