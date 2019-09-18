@@ -49,7 +49,7 @@ router.post(
 router.post(
     "/signin",
     [
-        check("email", "Must be a valid Email").isEmail(),
+        check("email", "Must be a valid email").isEmail(),
         check("password", "Must be longer than 6 character").isLength({ min: 6 }),
     ],
     async (req: Request, res: Response) => {
