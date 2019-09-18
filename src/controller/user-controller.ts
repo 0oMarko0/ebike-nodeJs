@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import UserRepo from "../data/repository/user-repo";
 import User from "../model/user";
 import { Token } from "./controller";
