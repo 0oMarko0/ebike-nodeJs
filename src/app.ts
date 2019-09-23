@@ -2,6 +2,7 @@ import appRoot from "app-root-path";
 import Express, { Request, Response, NextFunction } from "express";
 import Registry from "./utils/registry";
 import bodyParser from "body-parser";
+import cors from 'cors';
 import { config } from "dotenv";
 import { morganLogger } from "./utils/logger";
 
@@ -14,6 +15,7 @@ const app = Express();
 
 app.set("port", process.env.PORT || 4200);
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morganLogger);
