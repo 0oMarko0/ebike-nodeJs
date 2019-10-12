@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import express from "express";
-import GeoPoint from "../model/geo-point";
+import JourneyController from "../controller/journey-controller";
+import Registry from "../utils/registry";
+import { Injectable } from "../utils/injectable";
 
 const router = express.Router();
 
 router.get("/starting-point", (req, res) => {
-    const startingPoint: GeoPoint = new GeoPoint(46.77656, -71.2718);
-    res.send({ starting_point: startingPoint.toModel }).status(200);
+    const journeyController: JourneyController = Registry.resolve(Injectable.JourneyController);
+    res.send({ starting_point: journeyController.startingPoint() }).status(200);
 });
 
 export default router;
