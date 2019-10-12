@@ -3,7 +3,7 @@ interface Point {
     longitude: number;
 }
 
-interface GeoPointModel {
+export interface GeoPointModel {
     type: string;
     coordinates: Point;
 }
