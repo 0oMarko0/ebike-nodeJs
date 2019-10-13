@@ -18,7 +18,7 @@ export default class Seed {
     }
 
     start() {
-        this.repoToSeed.forEach((repo) => {
+        this.repoToSeed.forEach(repo => {
             repo.start();
         });
     }
