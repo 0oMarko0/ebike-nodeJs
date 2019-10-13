@@ -60,6 +60,10 @@ export default class Repo {
         if (result.deletedCount === 0) throw new Error(`Unable to delete document with id: ${id}`);
     }
 
+    async drop() {
+        await this.collection.drop();
+    }
+
     private toObjectId(id: string): ObjectId {
         if (_.isString(id) && ObjectId.isValid(id)) return new ObjectId(id);
     }

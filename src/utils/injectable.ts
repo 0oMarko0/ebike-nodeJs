@@ -2,6 +2,7 @@ const repo = {
     UserRepo: "UserRepo",
     RestaurantRepo: "RestaurantRepo",
     JourneyRepo: "JourneyRepo",
+    BikePathRepo: "BikePathRepo",
 };
 
 const controller = {

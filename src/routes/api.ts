@@ -16,7 +16,9 @@ const toUser = (req: Request): User => {
     };
 };
 
-router.get("/heartbeat", (req, res) => {
+router.get("/heartbeat", async (req, res) => {
+    const journeyController = Registry.resolve(Injectable.JourneyController);
+    const test = await journeyController.getBikePathLength();
     res.send({
         nb_restaurants: 121,
         total_path_length: 420,
