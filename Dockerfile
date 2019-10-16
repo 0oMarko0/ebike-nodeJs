@@ -1,12 +1,14 @@
 FROM node:alpine
 
 WORKDIR /usr/ebike
-ENV PORT=8081
+ENV PORT=8080
 
 COPY package.json ./
 RUN npm install
 
 COPY . .
 
-EXPOSE 8081
+RUN npm build
+
+EXPOSE 8080
 CMD ["npm", "start"]
