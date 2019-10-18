@@ -9,16 +9,12 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - ~/mongodb/data/db:/data/db
-    networks:
-      - mongo
   server:
     build: .
     ports:
       - 8080:8080
     depends_on:
       - mongo
-    networks:
-      - mongo
-networks:
-  mongo:
-    name: mongo
+    environment:
+      MONGO_URL: mongodb://root:example@mongo:27017
+      JWT_SECRET: AwesomeSecret

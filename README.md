@@ -4,13 +4,20 @@
 
 Ebike is an application that allows a user to plan a bike ride to visit restaurants
 ## Installation
-#### Prerequisite
+#### Prerequisite for development
 - [Node](https://nodejs.org/en/download/) That should include npm as well
 - [Docker for windows](https://docs.docker.com/docker-for-windows/) or
 - [Docker for linux](https://docs.docker.com/v17.12/install/linux/docker-ce/ubuntu/)
 - [Docker-compose](https://docs.docker.com/compose/install/)
+- [Typescript](https://www.typescriptlang.org/)
 
+## Run The Application
 #### From Docker-compose
+**It may be a good idea to start clean and prune all the container image and network you have on your computer**
+```
+docker system prune -a
+```
+
 In the root  directory of the project run 
 ```
 docker-compose up
@@ -19,19 +26,18 @@ docker-compose up
 That will boot a bunch of docker
 - The application server: [http://localhost:8080/](http://localhost:8080/)
 - A mongo database: [http://localhost:27017](http://localhost:27017)
-- A mongo-express, a UI to manage all our database: [http://localhost:8081/](http://0.0.0.0:8081/)
 
 If you want a more complete IDE to manage mongo you can use [Robo3T](https://robomongo.org/)
 
-#### Localy
-Once node is installed, the first step is to install all the dependencies
+#### Locally
+Once all the prerequisite are installed, the first step is to install all the dependencies
 ```
 npm install
 ```
 
 To launch the project on a development server
 ```
-npm run start-dev
+npm run start
 ```
 
 To run the test
