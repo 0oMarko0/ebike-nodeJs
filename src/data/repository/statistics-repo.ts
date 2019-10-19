@@ -35,6 +35,12 @@ export default class StatisticsRepo {
             .count();
     }
 
+    async getNumberOfRestaurant(): Promise<number> {
+        return this.getCollection(collections.restaurant)
+            .find()
+            .count();
+    }
+
     private getCollection(collection: string): Collection {
         return MongoDB.getDb().collection(collection);
     }

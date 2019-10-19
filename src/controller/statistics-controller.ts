@@ -10,7 +10,7 @@ export default class StatisticsController {
     async getGlobalStatistics() {
         const { totalLength } = await this.statisticsRepo.getBikePathLength();
         return {
-            nbRestaurants: 45,
+            nbRestaurants: await this.statisticsRepo.getNumberOfRestaurant(),
             totalPathLength: meterToKilo(totalLength),
             userConnected: await this.statisticsRepo.getActiveUser(),
             totalUser: await this.statisticsRepo.getTotalUser(),

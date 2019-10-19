@@ -18,7 +18,7 @@ export default class JourneyController {
     async getHeartBeat() {
         const { totalLength } = await this.statisticsRepo.getBikePathLength();
         return {
-            nb_restaurants: 121,
+            nb_restaurants: await this.statisticsRepo.getNumberOfRestaurant(),
             total_path_length: meterToKilo(totalLength),
         };
     }
