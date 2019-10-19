@@ -3,6 +3,7 @@
 
 
 Ebike is an application that allows a user to plan a bike ride to visit restaurants
+See the MVP at: [http://client-ebike.s3-website-us-east-1.amazonaws.com](http://client-ebike.s3-website-us-east-1.amazonaws.com)
 
 ## Installation
 #### Prerequisite for development
