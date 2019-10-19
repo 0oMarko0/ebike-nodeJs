@@ -6,6 +6,8 @@ Ebike is an application that allows a user to plan a bike ride to visit restaura
 
 See the MVP at: [http://client-ebike.s3-website-us-east-1.amazonaws.com](http://client-ebike.s3-website-us-east-1.amazonaws.com)
 
+Or read the API documentation at: [http://ebike-prod.us-east-1.elasticbeanstalk.com/readme](http://ebike-prod.us-east-1.elasticbeanstalk.com/readme)
+
 ## Installation
 #### Prerequisite for development
 - [Node](https://nodejs.org/en/download/) That should include npm as well
@@ -17,7 +19,7 @@ See the MVP at: [http://client-ebike.s3-website-us-east-1.amazonaws.com](http://
 
 ## Run The Application
 #### From Aws
-The application is hosted on AWS and is accessible at: [http://ebike-prod.us-east-1.elasticbeanstalk.com/readme](http://ebike-prod.us-east-1.elasticbeanstalk.com/readme)
+The application is hosted on AWS and is accessible at: [http://ebike-prod.us-east-1.elasticbeanstalk.com/](http://ebike-prod.us-east-1.elasticbeanstalk.com/)
 
 #### From Docker-compose
 **It may be a good idea to start clean and prune all the container image and network you have on your computer**
