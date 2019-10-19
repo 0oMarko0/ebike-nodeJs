@@ -5,7 +5,7 @@ import moment = require("moment");
 import logger from "../../utils/logger";
 
 export default class Repo {
-    private collection: Collection;
+    private readonly collection: Collection;
 
     constructor(collection: string) {
         this.collection = MongoDB.getDb().collection(collection);
