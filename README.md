@@ -3,9 +3,10 @@
 
 
 Ebike is an application that allows a user to plan a bike ride to visit restaurants
-## Documentation
-You will find the API documentation at [http://localhost:8080/readme](http://localhost:8080/readme)
-once the application has started from docker-compose
+
+See the MVP at: [http://client-ebike.s3-website-us-east-1.amazonaws.com](http://client-ebike.s3-website-us-east-1.amazonaws.com)
+
+Or read the API documentation at: [http://ebike-prod.us-east-1.elasticbeanstalk.com/readme](http://ebike-prod.us-east-1.elasticbeanstalk.com/readme)
 
 ## Installation
 #### Prerequisite for development
@@ -17,6 +18,9 @@ once the application has started from docker-compose
 - [Webstorm](https://www.jetbrains.com/webstorm/) free license with ulaval email
 
 ## Run The Application
+#### From Aws
+The application is hosted on AWS and is accessible at: [http://ebike-prod.us-east-1.elasticbeanstalk.com/](http://ebike-prod.us-east-1.elasticbeanstalk.com/)
+
 #### From Docker-compose
 **It may be a good idea to start clean and prune all the container image and network you have on your computer**
 ```
@@ -50,6 +54,7 @@ To run the test
 ```
 npm run test
 ```
+
 
 ## Code Formatting
 [Eslint](https://eslint.org/) and [Prettier](https://prettier.io) are used to lint and format. 

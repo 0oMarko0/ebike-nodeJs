@@ -5,6 +5,7 @@ import { Injectable } from "../utils/injectable";
 import { check } from "express-validator";
 import User from "../model/user";
 import logger from "../utils/logger";
+import StatisticsController from "../controller/statistics-controller";
 
 const router = express.Router();
 
@@ -15,13 +16,9 @@ const toUser = (req: Request): User => {
     };
 };
 
-router.get("/statistics", (req, res) => {
-    res.send({
-        nbRestaurants: 121,
-        totalPathLength: 420,
-        userConnected: 1234,
-        totalUser: 34,
-    }).status(200);
+router.get("/statistics", async (req, res) => {
+    const statistics: StatisticsController = Registry.resolve(Injectable.StatisticsController);
+    res.send(await statistics.getGlobalStatistics()).status(200);
 });
 
 router.post(
