@@ -10,22 +10,26 @@ export default class RestaurantSeed extends ReadFile {
     }
 
     async start() {
-        const { features } = this.readFromfile("sherbrooke_restaurant.json");
+        const restaurants = this.readFromfile("sherbrooke_restaurant.json");
         await this.restaurantRepo.drop();
-        features.map(async (row: any) => {
-            await this.restaurantRepo.create(this.translate(row, "Sherbrooke"));
-        });
-        logger.info("SEEDING journey DONE");
+        try {
+            Object.values(restaurants).map(async (row: any) => {
+                await this.restaurantRepo.create(this.translate(row, "Sherbrooke"));
+            });
+        } catch (e) {
+            logger.error(e.message);
+        }
+        logger.info("SEEDING restaurant DONE");
     }
 
     private translate(row: any, city: string) {
         return {
-            segmentLength: row.properties.Shape_Length,
-            coating: row.properties.TYPEREVETEMENT,
-            destination: row.properties.NOMDESTINATIONSHERBROOKE,
-            city,
-            created: row.created,
-            geometry: row.geometry,
+            phone: row.phone,
+            coordinates: [row.latitude, row.longitude],
+            types: row.types,
+            placeId: row.placeID,
+            name: row.name,
+            address: row.address.full,
         };
     }
 }
