@@ -1,0 +1,36 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "1.0.0",
+    "title" : "Ebike API",
+    "description" : "Application to find restaurant on a bike path",
+    "contact" : {
+      "email" : "marc-olivier.gagnon4@ulaval.com"
+    }
+  },
+  "tags" : [ {
+    "name" : "user",
+    "description" : "Operations available to regular user"
+  } ],
+  "paths" : {
+    "/heartbeat" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "",
+        "operationId" : "searchInventory",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK request successfull"
+          },
+          "500" : {
+            "description" : "Server Error"
+          }
+        }
+      }
+    }
+  },
+  "host" : "ebike-prod.us-east-1.elasticbeanstalk.com",
+  "basePath" : "/api",
+  "schemes" : [ "http" ]
+}
