@@ -1,19 +1,19 @@
 import logger from "../../utils/logger";
 import ReadFile from "./readFile";
-import JourneyRepo from "../repository/journey-repo";
+import RestaurantRepo from "../repository/restaurant-repo";
 
-export default class JourneySeed extends ReadFile {
-    private journeyRepo: JourneyRepo;
-    constructor(journeyRepo: JourneyRepo) {
+export default class RestaurantSeed extends ReadFile {
+    private restaurantRepo: RestaurantRepo;
+    constructor(restaurantRepo: RestaurantRepo) {
         super();
-        this.journeyRepo = journeyRepo;
+        this.restaurantRepo = restaurantRepo;
     }
 
     async start() {
-        const { features } = this.readFromfile("sherbrooke_bike_path.geojson");
-        await this.journeyRepo.drop();
+        const { features } = this.readFromfile("sherbrooke_restaurant.json");
+        await this.restaurantRepo.drop();
         features.map(async (row: any) => {
-            await this.journeyRepo.create(this.translate(row, "Sherbrooke"));
+            await this.restaurantRepo.create(this.translate(row, "Sherbrooke"));
         });
         logger.info("SEEDING journey DONE");
     }
