@@ -1,8 +1,9 @@
 import Repo from "./repo";
+import collections from "../utils/mongoCollection";
 
 export default class UserRepo extends Repo {
     constructor() {
-        super("user");
+        super(collections.user);
     }
 
     async getByEmail(email: string) {

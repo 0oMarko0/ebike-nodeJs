@@ -8,6 +8,9 @@ import RestaurantController from "../controller/restaurant-controller";
 import RestaurantRepo from "../data/repository/restaurant-repo";
 import JourneyRepo from "../data/repository/journey-repo";
 import JourneyController from "../controller/journey-controller";
+import BikePathRepo from "../data/repository/bike-path";
+import StatisticsRepo from "../data/repository/statistics-repo";
+import StatisticsController from "../controller/statistics-controller";
 
 export default class DependencyInjection {
     bootstrap() {
@@ -20,6 +23,8 @@ export default class DependencyInjection {
         Registry.register(Injectable.UserRepo, new UserRepo());
         Registry.register(Injectable.RestaurantRepo, new RestaurantRepo());
         Registry.register(Injectable.JourneyRepo, new JourneyRepo());
+        Registry.register(Injectable.BikePathRepo, new BikePathRepo());
+        Registry.register(Injectable.StatisticsRepo, new StatisticsRepo());
     }
 
     private initialiseController() {
@@ -30,7 +35,14 @@ export default class DependencyInjection {
         );
         Registry.register(
             Injectable.JourneyController,
-            new JourneyController(Registry.resolve(Injectable.JourneyRepo)),
+            new JourneyController(
+                Registry.resolve(Injectable.JourneyRepo),
+                Registry.resolve(Injectable.StatisticsRepo),
+            ),
+        );
+        Registry.register(
+            Injectable.StatisticsController,
+            new StatisticsController(Registry.resolve(Injectable.StatisticsRepo)),
         );
     }
 }
