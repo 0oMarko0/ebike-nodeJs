@@ -6,6 +6,7 @@ import { check } from "express-validator";
 import User from "../model/user";
 import logger from "../utils/logger";
 import StatisticsController from "../controller/statistics-controller";
+import formatError from "../utils/error";
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ router.post(
             res.status(201).send(await userController.createNewUser(toUser(req)));
         } catch (e) {
             logger.error(e.message);
-            res.status(412).send(e.message);
+            res.status(412).send(formatError(e.message, req, 412));
         }
     },
 );
@@ -50,9 +51,13 @@ router.post(
             res.status(200).send(await userController.signInUser(toUser(req)));
         } catch (e) {
             logger.error(e.message);
-            res.status(400).send(e.message);
+            res.status(400).send(formatError(e.message, req, 400));
         }
     },
 );
 
+router.post("/logout", async (req: Request, res: Response) => {
+    const userController: UserController = Registry.resolve(Injectable.UserController);
+    res.status(200).send(await userController.logout(toUser(req)));
+});
 export default router;

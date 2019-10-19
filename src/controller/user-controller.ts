@@ -10,9 +10,11 @@ export default class UserController {
         this.userRepo = userRepo;
     }
 
-    async signInUser(user: User) {
+    async signInUser(user: User): Promise<Token> {
         const retrievedUser: User = await this.userRepo.getByEmail(user.email);
         if (retrievedUser && bcrypt.compareSync(user.password, retrievedUser.password)) {
+            retrievedUser.isActive = true;
+            await this.userRepo.update(retrievedUser.id, retrievedUser);
             return this.createToken(user);
         } else {
             throw new Error("The password or the email are invalid");
@@ -26,9 +28,16 @@ export default class UserController {
 
         user.password = bcrypt.hashSync(user.password, 10);
         user.isAdmin = false;
+        user.isActive = true;
         user.id = await this.userRepo.create(user);
 
         return this.createToken(user);
+    }
+
+    async logout(user: User) {
+        const retrievedUser: User = await this.userRepo.getByEmail(user.email);
+        retrievedUser.isActive = false;
+        return await this.userRepo.update(retrievedUser.id, retrievedUser);
     }
 
     private createToken(user: User): Token {

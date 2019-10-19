@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import logger from "../utils/logger";
 import User from "../model/user";
+import formatError from "../utils/error";
 
 const AUTHORIZATION = "Authorization";
 
@@ -16,10 +17,10 @@ const AuthMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => 
             req.user = jwt.verify(token.split(" ")[1], process.env.JWT_SECRET) as User;
         } catch (e) {
             logger.error(e.message);
-            res.status(401).send({ message: "Authentication failed" });
+            res.status(401).send(formatError("Authentication failed", req, 401));
         }
     } else {
-        res.status(401).send({ message: "You need to be Authenticated to access this ressource" });
+        res.status(401).send(formatError("You need to be authenticated", req, 401));
     }
     next();
 };
