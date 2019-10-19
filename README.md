@@ -45,11 +45,6 @@ To run the test
 npm run test
 ```
 
-To lint the code base
-```
-npm run lint
-```
-
 ## Code Formatting
 [Eslint](https://eslint.org/) and [Prettier](https://prettier.io) are used to lint and format. 
 Depending on your IDE you will need to download some plugin in order to make those tool work.

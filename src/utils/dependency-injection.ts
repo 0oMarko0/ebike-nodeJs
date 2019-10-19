@@ -24,7 +24,13 @@ export default class DependencyInjection {
 
     private initialiseController() {
         Registry.register(Injectable.UserController, new UserController(Registry.resolve(Injectable.UserRepo)));
-        Registry.register(Injectable.RestaurantController, new RestaurantController(Registry.resolve(Injectable.RestaurantRepo)));
-        Registry.register(Injectable.JourneyController, new JourneyController(Registry.resolve(Injectable.JourneyRepo)));
+        Registry.register(
+            Injectable.RestaurantController,
+            new RestaurantController(Registry.resolve(Injectable.RestaurantRepo)),
+        );
+        Registry.register(
+            Injectable.JourneyController,
+            new JourneyController(Registry.resolve(Injectable.JourneyRepo)),
+        );
     }
 }
