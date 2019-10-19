@@ -24,7 +24,9 @@ export default class StatisticsRepo {
     }
 
     async getActiveUser() {
-        return 3;
+        return this.getCollection(collections.user)
+            .find({ isActive: true })
+            .count();
     }
 
     async getTotalUser(): Promise<number> {

@@ -12,6 +12,7 @@ config({ path: `${appRoot}/.env` });
 Registry.initialise();
 
 import initRoute from "./routes/root";
+import formatError from "./utils/error";
 
 const app = Express();
 
@@ -25,12 +26,7 @@ app.use('/readme', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocumen
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
     res.status(error.status || 500);
-    res.send({
-        error: {
-            message: error.message,
-            url: req.baseUrl,
-        },
-    });
+    res.send(formatError('Internal Server Error', req, error.status));
 });
 
 initRoute(app);

@@ -46,13 +46,13 @@ export default class Repo {
         const query = { _id: this.toObjectId(id) };
         Object.assign(document, { updated: moment().unix() });
         const update = {
-            $set: document,
+            $set: this.stripDocument(document),
         };
 
         const result = await this.collection.updateOne(query, update);
         if (result.matchedCount === 0) throw new Error(`Unable to update document: ${document}`);
 
-        return result.upsertedId._id;
+        return this.toObjectId(id);
     }
 
     async delete(id: string) {
@@ -69,7 +69,18 @@ export default class Repo {
         }
     }
 
-    private toObjectId(id: string): ObjectId {
-        if (_.isString(id) && ObjectId.isValid(id)) return new ObjectId(id);
+    private toObjectId(id: string | ObjectId): ObjectId {
+        if (_.isString(id) && ObjectId.isValid(id)) {
+            return new ObjectId(id);
+        }
+
+        return <ObjectId>id;
+    }
+
+    private stripDocument(document: any) {
+        if (_.has(document, 'id')) delete document["id"];
+        if(_.has(document, '_id')) delete document["_id"];
+
+        return document;
     }
 }
