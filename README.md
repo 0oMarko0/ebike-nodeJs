@@ -10,6 +10,7 @@ Ebike is an application that allows a user to plan a bike ride to visit restaura
 - [Docker for linux](https://docs.docker.com/v17.12/install/linux/docker-ce/ubuntu/)
 - [Docker-compose](https://docs.docker.com/compose/install/)
 - [Typescript](https://www.typescriptlang.org/)
+- [Webstorm](https://www.jetbrains.com/webstorm/) free license with ulaval email
 
 ## Run The Application
 #### From Docker-compose
@@ -37,7 +38,7 @@ npm install
 
 To launch the project on a development server
 ```
-npm run start
+npm run start-dev
 ```
 
 To run the test
