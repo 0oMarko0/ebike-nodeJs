@@ -4,7 +4,8 @@
 
 Ebike is an application that allows a user to plan a bike ride to visit restaurants
 ## Documentation
-You will find the API documentation at `/readme`
+You will find the API documentation at [http://localhost:8080/readme](http://localhost:8080/readme)
+once the application has started from docker-compose
 
 ## Installation
 #### Prerequisite for development
@@ -28,6 +29,7 @@ docker-compose up
 ```
 
 That will boot a bunch of docker
+- The application documentation [http://localhost:8080/readme](http://localhost:8080/readme)
 - The application server: [http://localhost:8080/](http://localhost:8080/)
 - A mongo database: [http://localhost:27017](http://localhost:27017)
 
