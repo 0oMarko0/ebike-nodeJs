@@ -3,9 +3,6 @@
 
 
 Ebike is an application that allows a user to plan a bike ride to visit restaurants
-## Documentation
-You will find the API documentation at [http://localhost:8080/readme](http://localhost:8080/readme)
-once the application has started from docker-compose
 
 ## Installation
 #### Prerequisite for development
@@ -18,7 +15,7 @@ once the application has started from docker-compose
 
 ## Run The Application
 #### From Aws
-The application is hosted on AWS and is accessible at: [http://ebike-prod.us-east-1.elasticbeanstalk.com/readme](http://http://ebike-prod.us-east-1.elasticbeanstalk.com/readme)
+The application is hosted on AWS and is accessible at: [http://ebike-prod.us-east-1.elasticbeanstalk.com/readme](http://ebike-prod.us-east-1.elasticbeanstalk.com/readme)
 
 #### From Docker-compose
 **It may be a good idea to start clean and prune all the container image and network you have on your computer**
