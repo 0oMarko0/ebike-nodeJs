@@ -2,6 +2,7 @@ import { Collection, ObjectId } from "mongodb";
 import MongoDB from "../database/mongo";
 import _ from "lodash";
 import moment = require("moment");
+import logger from "../../utils/logger";
 
 export default class Repo {
     private collection: Collection;
@@ -61,7 +62,11 @@ export default class Repo {
     }
 
     async drop() {
-        await this.collection.drop();
+        try {
+            await this.collection.drop();
+        } catch (e) {
+            logger.error(`Mongo Error: ${e.codeName}`);
+        }
     }
 
     private toObjectId(id: string): ObjectId {
