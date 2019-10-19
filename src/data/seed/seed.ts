@@ -6,8 +6,8 @@ import Registry from "../../utils/registry";
 import { Injectable } from "../../utils/injectable";
 
 export default class Seed {
-    private journeyRepo: JourneyRepo;
-    private bikePathRepo: BikePathRepo;
+    private readonly journeyRepo: JourneyRepo;
+    private readonly bikePathRepo: BikePathRepo;
     private repoToSeed: any[] = [];
 
     constructor() {
