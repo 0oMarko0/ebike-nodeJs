@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import express, { Request, Response } from "express";
 import UserController from "../controller/user-controller";
 import Registry from "../utils/registry";
@@ -16,16 +15,12 @@ const toUser = (req: Request): User => {
     };
 };
 
-router.get("/heartbeat", (req, res) => {
+router.get("/statistics", (req, res) => {
     res.send({
-        nb_restaurants: 121,
-        total_path_length: 420,
-    }).status(200);
-});
-
-router.get("/readme", (req, res) => {
-    res.send({
-        documentation: "It should send api documentation",
+        nbRestaurants: 121,
+        totalPathLength: 420,
+        userConnected: 1234,
+        totalUser: 34
     }).status(200);
 });
 
