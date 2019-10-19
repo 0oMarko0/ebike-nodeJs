@@ -20,7 +20,7 @@ router.get("/statistics", (req, res) => {
         nbRestaurants: 121,
         totalPathLength: 420,
         userConnected: 1234,
-        totalUser: 34
+        totalUser: 34,
     }).status(200);
 });
 

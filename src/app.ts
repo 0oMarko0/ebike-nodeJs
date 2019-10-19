@@ -21,7 +21,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morganLogger);
-app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocument));
+app.use('/readme', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocument));
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
     res.status(error.status || 500);
