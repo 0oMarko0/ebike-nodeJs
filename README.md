@@ -3,6 +3,9 @@
 
 
 Ebike is an application that allows a user to plan a bike ride to visit restaurants
+## Documentation
+You will find the API documentation at `/docs`
+
 ## Installation
 #### Prerequisite for development
 - [Node](https://nodejs.org/en/download/) That should include npm as well
