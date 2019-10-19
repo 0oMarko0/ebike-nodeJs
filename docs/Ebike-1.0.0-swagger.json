@@ -30,7 +30,7 @@
       }
     }
   },
-  "host" : "localhost:8080",
+  "host" : "ebike-prod.us-east-1.elasticbeanstalk.com/",
   "basePath" : "/",
   "schemes" : [ "http" ]
 }
