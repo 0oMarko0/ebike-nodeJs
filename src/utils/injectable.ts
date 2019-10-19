@@ -3,12 +3,14 @@ const repo = {
     RestaurantRepo: "RestaurantRepo",
     JourneyRepo: "JourneyRepo",
     BikePathRepo: "BikePathRepo",
+    StatisticsRepo: "StatisticsRepo",
 };
 
 const controller = {
     UserController: "UserController",
     RestaurantController: "RestaurantController",
     JourneyController: "JourneyController",
+    StatisticsController: "StatisticsController",
 };
 
 export const Injectable = {
