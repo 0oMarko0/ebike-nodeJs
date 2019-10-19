@@ -17,6 +17,9 @@ once the application has started from docker-compose
 - [Webstorm](https://www.jetbrains.com/webstorm/) free license with ulaval email
 
 ## Run The Application
+#### From Aws
+The application is hosted on AWS and is accessible at: [http://ebike-prod.us-east-1.elasticbeanstalk.com/readme](http://http://ebike-prod.us-east-1.elasticbeanstalk.com/readme)
+
 #### From Docker-compose
 **It may be a good idea to start clean and prune all the container image and network you have on your computer**
 ```
@@ -50,6 +53,7 @@ To run the test
 ```
 npm run test
 ```
+
 
 ## Code Formatting
 [Eslint](https://eslint.org/) and [Prettier](https://prettier.io) are used to lint and format. 
