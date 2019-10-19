@@ -24,6 +24,6 @@ const server = new Promise((resolve, reject) => {
             resolve();
         })
         .catch(reject);
-});
+}).catch(e => logger.error(e));
 
 export default server;

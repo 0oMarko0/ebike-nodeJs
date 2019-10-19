@@ -2,7 +2,7 @@ import appRoot from "app-root-path";
 import Express, { Request, Response, NextFunction } from "express";
 import Registry from "./utils/registry";
 import bodyParser from "body-parser";
-import cors from 'cors';
+import cors from "cors";
 import { config } from "dotenv";
 import { morganLogger } from "./utils/logger";
 
