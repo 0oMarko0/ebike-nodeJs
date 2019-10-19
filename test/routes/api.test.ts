@@ -21,8 +21,10 @@ describe("GET /api/heartbeat", () => {
             .get(HEART_BEAT_ROUTE)
             .expect(200)
             .end((err, res) => {
-                expect(res.body).to.have.property("nb_restaurants"); // Shoud be validate in the controller test
-                expect(res.body).to.have.property("total_path_length");
+                expect(res.body).to.have.property("nbRestaurants"); // Shoud be validate in the controller test
+                expect(res.body).to.have.property("totalPathLength");
+                expect(res.body).to.have.property("userConnected");
+                expect(res.body).to.have.property("totalUser");
             });
     });
 });
