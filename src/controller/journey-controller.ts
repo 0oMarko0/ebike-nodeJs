@@ -19,7 +19,7 @@ export default class JourneyController {
         const { totalLength } = await this.statisticsRepo.getBikePathLength();
         return {
             nb_restaurants: await this.statisticsRepo.getNumberOfRestaurant(),
-            total_path_length: meterToKilo(totalLength),
+            total_path_length: totalLength,
         };
     }
 }
