@@ -10,7 +10,7 @@ services:
     volumes:
       - ~/mongodb/data/db:/data/db
   server:
-    build: .
+    build: ./ebike/
     ports:
       - 8080:8080
     depends_on:
