@@ -1,1 +1,0 @@
-{"version":3,"file":"user.js","sourceRoot":"","sources":["../../src/model/user.ts"],"names":[],"mappings":"","sourcesContent":["export default interface User {\n    email: string;\n    isActive?: boolean;\n    password?: string;\n    id?: string;\n    isAdmin?: boolean;\n}\n"]}
