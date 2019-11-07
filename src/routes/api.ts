@@ -7,6 +7,7 @@ import User from "../model/user";
 import logger from "../utils/logger";
 import StatisticsController from "../controller/statistics-controller";
 import formatError from "../utils/error";
+import AuthMiddleware from "../middleware/authentication";
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ const toUser = (req: Request): User => {
     };
 };
 
-router.get("/statistics", async (req, res) => {
+router.get("/statistics", AuthMiddleware, async (req, res) => {
     const statistics: StatisticsController = Registry.resolve(Injectable.StatisticsController);
     res.send(await statistics.getGlobalStatistics()).status(200);
 });
@@ -56,7 +57,7 @@ router.post(
     },
 );
 
-router.post("/logout", async (req: Request, res: Response) => {
+router.post("/logout", AuthMiddleware, async (req: Request, res: Response) => {
     const userController: UserController = Registry.resolve(Injectable.UserController);
     res.status(200).send(await userController.logout(toUser(req)));
 });
