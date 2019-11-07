@@ -11,6 +11,7 @@ const controller = {
     RestaurantController: "RestaurantController",
     JourneyController: "JourneyController",
     StatisticsController: "StatisticsController",
+    BikePathController: "BikePathController",
 };
 
 export const Injectable = {

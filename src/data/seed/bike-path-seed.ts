@@ -14,9 +14,9 @@ export default class BikePathSeed extends ReadFile {
         const bikePath = this.readFromfile("montreal-bike-path.geojson");
         await this.bikePathRepo.drop();
         try {
-            await this.bikePathRepo.create(Object.assign(bikePath, { city: "Montreal" }));
+            await this.bikePathRepo.create(Object.assign(bikePath, { city: "montreal" }));
         } catch (e) {
-           logger.error(e.message);
+            logger.error(e.message);
         }
         logger.info("SEEDING bike-path DONE");
     }
