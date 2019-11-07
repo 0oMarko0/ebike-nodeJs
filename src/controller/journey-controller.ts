@@ -22,4 +22,13 @@ export default class JourneyController {
             total_path_length: totalLength,
         };
     }
+
+    getCitys() {
+        return [
+            {
+                name: "Montreal",
+                slug: "montreal",
+            },
+        ];
+    }
 }

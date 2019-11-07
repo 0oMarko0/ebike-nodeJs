@@ -4,6 +4,7 @@ import JourneyRepo from "../repository/journey-repo";
 
 export default class JourneySeed extends ReadFile {
     private journeyRepo: JourneyRepo;
+
     constructor(journeyRepo: JourneyRepo) {
         super();
         this.journeyRepo = journeyRepo;
@@ -14,19 +15,20 @@ export default class JourneySeed extends ReadFile {
         await this.journeyRepo.drop();
         try {
             features.map(async (row: any) => {
-                await this.journeyRepo.create(this.translate(row, "Montreal"));
+                await this.journeyRepo.create(this.translate(row, "montreal"));
             });
         } catch (e) {
-           logger.error(e.message);
+            logger.error(e.message);
         }
         logger.info("SEEDING journey DONE");
     }
 
     private translate(row: any, city: string) {
         return {
-            segmentLength: row.properties.Shape_Length,
-            coating: row.properties.TYPEREVETEMENT,
-            destination: row.properties.NOMDESTINATIONSHERBROOKE,
+            segmentLength: row.properties.LONGUEUR,
+            coating: row.properties.TYPE_VOIE,
+            destination: row.properties.NOM_ARR_VI,
+            saison4: row.properties.SAISONS4,
             city,
             created: row.created,
             geometry: row.geometry,

@@ -3,8 +3,6 @@ import chalk from "chalk";
 import logger from "./utils/logger";
 import MongoDB from "./data/database/mongo";
 import DependencyInjection from "./utils/dependency-injection";
-import Registry from "./utils/registry";
-import { Injectable } from "./utils/injectable";
 import Seed from "./data/seed/seed";
 
 const dip = new DependencyInjection();
