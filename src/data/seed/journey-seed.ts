@@ -10,11 +10,11 @@ export default class JourneySeed extends ReadFile {
     }
 
     async start() {
-        const { features } = this.readFromfile("sherbrooke_bike_path.geojson");
+        const { features } = this.readFromfile("montreal-bike-path.geojson");
         await this.journeyRepo.drop();
         try {
             features.map(async (row: any) => {
-                await this.journeyRepo.create(this.translate(row, "Sherbrooke"));
+                await this.journeyRepo.create(this.translate(row, "Montreal"));
             });
         } catch (e) {
            logger.error(e.message);
