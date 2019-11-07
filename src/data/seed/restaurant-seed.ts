@@ -5,7 +5,6 @@ import _ from "lodash";
 
 export default class RestaurantSeed extends ReadFile {
     private restaurantRepo: RestaurantRepo;
-
     constructor(restaurantRepo: RestaurantRepo) {
         super();
         this.restaurantRepo = restaurantRepo;
@@ -60,6 +59,7 @@ export default class RestaurantSeed extends ReadFile {
         const geometry = {
             type: "Point",
         };
+
         const coordinates = [];
         coordinates.push(row.lon);
         coordinates.push(row.lat);
