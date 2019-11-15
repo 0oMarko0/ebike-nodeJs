@@ -9,8 +9,8 @@ export default class GeoPoint {
     type: string;
 
     constructor(latitude: number, longitude: number) {
-        this.latitude = (typeof latitude === "string") ? parseFloat(latitude): latitude;
-        this.longitude = (typeof longitude === "string") ? parseFloat(longitude): longitude;
+        this.latitude = typeof latitude === "string" ? parseFloat(latitude) : latitude;
+        this.longitude = typeof longitude === "string" ? parseFloat(longitude) : longitude;
         this.type = "GeoPoint";
     }
 

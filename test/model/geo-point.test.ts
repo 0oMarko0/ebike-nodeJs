@@ -13,7 +13,7 @@ describe("MODEL GeoPoint", () => {
         expect(geoPointModel).to.have.property("type");
         expect(geoPointModel).to.have.property("coordinates");
         expect(geoPointModel.type).to.be.equal("GeoPoint");
-        expect(geoPointModel.coordinates.latitude).to.be.equal(latitude);
-        expect(geoPointModel.coordinates.longitude).to.be.equal(longitude);
+        expect(geoPointModel.coordinates[0]).to.be.equal(longitude);
+        expect(geoPointModel.coordinates[1]).to.be.equal(latitude);
     });
 });
