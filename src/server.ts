@@ -3,9 +3,8 @@ import chalk from "chalk";
 import logger from "./utils/logger";
 import MongoDB from "./data/database/mongo";
 import DependencyInjection from "./utils/dependency-injection";
-import Registry from "./utils/registry";
-import { Injectable } from "./utils/injectable";
 import Seed from "./data/seed/seed";
+import { buildIndex } from "./data/utils";
 
 const dip = new DependencyInjection();
 
@@ -15,6 +14,7 @@ const server = new Promise((resolve, reject) => {
             dip.bootstrap();
             const seed = new Seed();
             await seed.start();
+            buildIndex();
             app.listen(app.get("port"), () => {
                 logger.info(
                     chalk.green(`App is running at http://localhost:${app.get("port")} in ${app.get("env")} mode`),

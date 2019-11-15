@@ -11,6 +11,7 @@ import JourneyController from "../controller/journey-controller";
 import BikePathRepo from "../data/repository/bike-path";
 import StatisticsRepo from "../data/repository/statistics-repo";
 import StatisticsController from "../controller/statistics-controller";
+import BikePathController from "../controller/bike-path-controller";
 
 export default class DependencyInjection {
     bootstrap() {
@@ -43,6 +44,10 @@ export default class DependencyInjection {
         Registry.register(
             Injectable.StatisticsController,
             new StatisticsController(Registry.resolve(Injectable.StatisticsRepo)),
+        );
+        Registry.register(
+            Injectable.BikePathController,
+            new BikePathController(Registry.resolve(Injectable.BikePathRepo)),
         );
     }
 }
