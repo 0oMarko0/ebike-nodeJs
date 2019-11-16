@@ -12,7 +12,7 @@ const server = new Promise((resolve, reject) => {
     MongoDB.connect()
         .then(async () => {
             dip.bootstrap();
-            if (process.env.SEED_BD) {
+            if (process.env.SEED_DB === "true") {
                 const seed = new Seed();
                 seed.start()
                     .then(() => buildIndex())
