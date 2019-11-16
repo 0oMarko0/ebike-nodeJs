@@ -32,6 +32,6 @@ export default class Seed {
             }),
         ).then(async () => {
            await transformation();
-        }).catch((e) => logger.error(`Error will seeding: ${e}`));
+        }).catch((e) => logger.error(`Error while seeding: ${e}`));
     };
 }
