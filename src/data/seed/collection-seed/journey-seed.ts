@@ -1,7 +1,7 @@
-import logger from "../../utils/logger";
-import ReadFile from "./readFile";
-import JourneyRepo from "../repository/journey-repo";
-import { calculatePolygon } from "../../utils/polygon";
+import logger from "../../../utils/logger";
+import ReadFile from "../../../utils/readFile";
+import JourneyRepo from "../../repository/journey-repo";
+import { calculatePolygon } from "../../../utils/polygon";
 
 export default class JourneySeed extends ReadFile {
     private journeyRepo: JourneyRepo;
@@ -12,7 +12,7 @@ export default class JourneySeed extends ReadFile {
     }
 
     async start() {
-        const { features } = this.readFromfile("montreal-bike-path.geojson");
+        const { features } = this.readFromfile("./seeding-data/montreal-bike-path.geojson");
         await this.journeyRepo.drop();
         try {
             features.map(async (row: any) => {

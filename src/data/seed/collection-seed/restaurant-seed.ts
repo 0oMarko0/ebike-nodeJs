@@ -1,6 +1,6 @@
-import logger from "../../utils/logger";
-import ReadFile from "./readFile";
-import RestaurantRepo from "../repository/restaurant-repo";
+import logger from "../../../utils/logger";
+import ReadFile from "../../../utils/readFile";
+import RestaurantRepo from "../../repository/restaurant-repo";
 import _ from "lodash";
 
 export default class RestaurantSeed extends ReadFile {
@@ -11,7 +11,7 @@ export default class RestaurantSeed extends ReadFile {
     }
 
     async start() {
-        const file = this.readFromfile("montreal-restaurant.json");
+        const file = this.readFromfile("./seeding-data/montreal-restaurant.json");
         const restaurants = file.elements;
         await this.restaurantRepo.drop();
         try {
