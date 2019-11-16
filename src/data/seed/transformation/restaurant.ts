@@ -2,20 +2,12 @@
 // hasRestaurantNear: bool
 // restaurants: restaurants[]
 
-// List all bike line (journey)
-// TODO: use mongo cursor for that -> batch processing
-
-// for all journey do a #geoWithin
-// db.restaurants.find( { location: { $geoWithin: { $geometry: neighborhood.geometry } } } )
-// add those results to the journey
-// update journey
-
 import MongoDB from "../../database/mongo";
 import collections from "../../utils/mongoCollection";
 import logger from "../../../utils/logger";
 
 export const transformation = async () => {
-  logger.info("TRANSFORMATION - Begin");
+    logger.info("TRANSFORMATION - Begin");
     const cursor = MongoDB.getDb()
         .collection(collections.journey)
         .find()
@@ -35,7 +27,6 @@ export const transformation = async () => {
             .toArray();
 
         if (result.length > 0) {
-            const toUpdate = Object.assign(doc, { hasRestaurant: true, restaurants: result });
             await MongoDB.getDb()
                 .collection(collections.journey)
                 .updateOne(
@@ -61,5 +52,5 @@ export const transformation = async () => {
         }
     }
 
-    logger.info("TRANSFORMATION Done")
+    logger.info("TRANSFORMATION Done");
 };
