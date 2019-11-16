@@ -13,8 +13,9 @@ const server = new Promise((resolve, reject) => {
         .then(async () => {
             dip.bootstrap();
             const seed = new Seed();
-            await seed.start();
-            buildIndex();
+            seed.start()
+                .then(() => buildIndex())
+                .catch(e => logger.error(`SEED error: ${e}`));
             app.listen(app.get("port"), () => {
                 logger.info(
                     chalk.green(`App is running at http://localhost:${app.get("port")} in ${app.get("env")} mode`),

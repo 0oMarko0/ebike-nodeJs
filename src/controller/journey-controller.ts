@@ -1,7 +1,6 @@
 import GeoPoint, { GeoPointModel } from "../model/geo-point";
 import JourneyRepo from "../data/repository/journey-repo";
 import StatisticsRepo from "../data/repository/statistics-repo";
-import { meterToKilo } from "../utils/unitConversion";
 
 export default class JourneyController {
     private journeyRepo: JourneyRepo;
@@ -15,6 +14,10 @@ export default class JourneyController {
         return new GeoPoint(46.77656, -71.2718).toModel;
     }
 
+    async createAJourney(body: any) {
+        const test = body;
+    }
+
     async getHeartBeat() {
         const { totalLength } = await this.statisticsRepo.getBikePathLength();
         return {
@@ -23,6 +26,7 @@ export default class JourneyController {
         };
     }
 
+    // TODO: Get from database
     getCitys() {
         return [
             {

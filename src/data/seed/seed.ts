@@ -22,9 +22,11 @@ export default class Seed {
         this.repoToSeed.push(new RestaurantSeed(this.restaurantRepo));
     }
 
-    start() {
-        this.repoToSeed.forEach(repo => {
-            repo.start();
-        });
-    }
+    start = async () => {
+        return Promise.all(
+            this.repoToSeed.map(async repo => {
+                await repo.start();
+            }),
+        );
+    };
 }

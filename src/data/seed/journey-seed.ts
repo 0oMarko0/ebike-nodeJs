@@ -1,6 +1,7 @@
 import logger from "../../utils/logger";
 import ReadFile from "./readFile";
 import JourneyRepo from "../repository/journey-repo";
+import { calculatePolygon } from "../../utils/polygon";
 
 export default class JourneySeed extends ReadFile {
     private journeyRepo: JourneyRepo;
@@ -23,6 +24,28 @@ export default class JourneySeed extends ReadFile {
         logger.info("SEEDING journey DONE");
     }
 
+    private toPolygon(row: any) {
+        const { coordinates } = row.geometry;
+        if (!this.isALoop(coordinates[0])) {
+            const polygon = calculatePolygon(coordinates[0]);
+            return {
+                type: "Polygon",
+                coordinates: [polygon],
+            };
+        } else {
+            logger.warn(`LOOP FOUND: ${row.properties.NOM_ARR_VI}`);
+            return {
+                type: "Polygon",
+                coordinates: coordinates,
+            };
+        }
+    }
+
+    private isALoop(coordinate: any[]) {
+        const lastIndex = coordinate.length - 1;
+        return coordinate[0][0] === coordinate[lastIndex][0] && coordinate[0][1] === coordinate[lastIndex][1];
+    }
+
     private translate(row: any, city: string) {
         return {
             segmentLength: row.properties.LONGUEUR,
@@ -32,6 +55,8 @@ export default class JourneySeed extends ReadFile {
             city,
             created: row.created,
             geometry: row.geometry,
+            polygon: this.toPolygon(row),
+            isALoop: this.isALoop(row.geometry.coordinates[0]),
         };
     }
 }
