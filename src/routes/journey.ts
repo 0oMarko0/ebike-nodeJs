@@ -25,7 +25,7 @@ router.get("/bike-path/:city", AuthMiddleware, async (req: Request, res: Respons
 
 router.post("/", AuthMiddleware, async (req: Request, res: Response) => {
     const journeyController: JourneyController = Registry.resolve(Injectable.JourneyController);
-    res.send(journeyController.createAJourney(req.body));
+    res.send(await journeyController.createAJourney(req.body));
 });
 
 export default router;

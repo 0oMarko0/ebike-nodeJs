@@ -57,6 +57,7 @@ export default class JourneySeed extends ReadFile {
             geometry: row.geometry,
             polygon: this.toPolygon(row),
             isALoop: this.isALoop(row.geometry.coordinates[0]),
+            id: parseInt(row.properties.ID),
         };
     }
 }

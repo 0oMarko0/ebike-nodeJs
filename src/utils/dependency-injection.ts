@@ -39,6 +39,7 @@ export default class DependencyInjection {
             new JourneyController(
                 Registry.resolve(Injectable.JourneyRepo),
                 Registry.resolve(Injectable.StatisticsRepo),
+                Registry.resolve(Injectable.BikePathRepo),
             ),
         );
         Registry.register(
