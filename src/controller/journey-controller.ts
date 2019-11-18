@@ -3,7 +3,7 @@ import JourneyRepo from "../data/repository/journey-repo";
 import StatisticsRepo from "../data/repository/statistics-repo";
 import BikePathRepo from "../data/repository/bike-path";
 const PathFinder = require("geojson-path-finder");
-import * as turf from '@turf/turf'
+import * as turf from "@turf/turf";
 
 export default class JourneyController {
     private journeyRepo: JourneyRepo;
@@ -48,24 +48,24 @@ export default class JourneyController {
                 "marker-color": "#6ad15a",
                 "marker-size": "medium",
                 "marker-symbol": "",
-                "name": "Dinagat Islands",
-                "destination": "start"
-            }
+                name: "Dinagat Islands",
+                destination: "start",
+            },
         };
 
         const endPoint = {
             type: "Feature",
             geometry: {
                 type: "Point",
-                coordinates: result[0].geometry.coordinates[0][0]
+                coordinates: result[0].geometry.coordinates[0][0],
             },
             properties: {
                 "marker-color": "#d16688",
                 "marker-size": "medium",
                 "marker-symbol": "",
-                "name": "Dinagat Islands",
-                "destination": "start"
-            }
+                name: "Dinagat Islands",
+                destination: "start",
+            },
         };
 
         const featureCollectionForNetwork = this.buildFeature(bikeLine);
@@ -82,7 +82,7 @@ export default class JourneyController {
 
     private calculateDistance(coordinates: number[][]) {
         let total = 0;
-        for(let i = 1; i < coordinates.length; i++) {
+        for (let i = 1; i < coordinates.length; i++) {
             const startingPoint = coordinates[i - 1];
             const finishingPoint = coordinates[i];
             const from = turf.point(startingPoint);
@@ -110,7 +110,7 @@ export default class JourneyController {
             type: "Feature",
             geometry: newItem(journey.path),
             properties: {
-                distance
+                distance,
             },
         });
 
