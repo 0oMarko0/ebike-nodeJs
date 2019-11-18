@@ -1,9 +1,13 @@
-import GeoPoint, { GeoPointModel } from "../model/geo-point";
 import JourneyRepo from "../data/repository/journey-repo";
 import StatisticsRepo from "../data/repository/statistics-repo";
 import BikePathRepo from "../data/repository/bike-path";
 const PathFinder = require("geojson-path-finder");
 import * as turf from "@turf/turf";
+import logger from "../utils/logger";
+import Point, { PointGeometry } from "../model/geometry/point";
+import Feature from "../model/feature";
+import { FeatureCollection, FeatureCollectionModel } from "../model/feature-collection";
+import LineString, { LineStringGeometry } from "../model/geometry/line-string";
 
 export default class JourneyController {
     private journeyRepo: JourneyRepo;
@@ -15,11 +19,12 @@ export default class JourneyController {
         this.bikePathRepo = bikePathRepo;
     }
 
-    startingPoint(): GeoPointModel {
-        return new GeoPoint(46.77656, -71.2718).toModel;
+    startingPoint(): PointGeometry {
+        return new Point(46.77656, -71.2718).toGeometry;
     }
 
     // Algo
+    // Validate that the restaurant type if valid if the section
     // 1. Build the local network
     //      1.1 validate that there restaurant type in that area ? -> or validate later ?
     // 2. find the nearest position the is a bike line
@@ -30,7 +35,7 @@ export default class JourneyController {
 
     async createAJourney(body: any) {
         const { latitude, longitude } = body.startingPoint.coordinates;
-        const point = new GeoPoint(latitude, longitude);
+        const point = new Point(latitude, longitude);
         const maxDistance = body.maximumLength * 1.1;
         const minDistance = body.maximumLength * 0.9;
 
@@ -38,44 +43,43 @@ export default class JourneyController {
         const start = await this.journeyRepo.findBikePathNearAPoint(point, 250, 0);
         const result = await this.journeyRepo.findBikePathNearAPoint(point, maxDistance, minDistance);
 
-        const startPoint = {
-            type: "Feature",
-            geometry: {
-                type: "Point",
-                coordinates: start[0].geometry.coordinates[0][0],
-            },
-            properties: {
-                "marker-color": "#6ad15a",
-                "marker-size": "medium",
-                "marker-symbol": "",
-                name: "Dinagat Islands",
-                destination: "start",
-            },
-        };
+        const startPoint = new Feature<PointGeometry>(
+            new Point(start[0].geometry.coordinates[0][0][1], start[0].geometry.coordinates[0][0][0]).toGeometry,
+            { "marker-color": "#d100aa" },
+        );
 
-        const endPoint = {
-            type: "Feature",
-            geometry: {
-                type: "Point",
-                coordinates: result[0].geometry.coordinates[0][0],
-            },
-            properties: {
-                "marker-color": "#d16688",
-                "marker-size": "medium",
-                "marker-symbol": "",
-                name: "Dinagat Islands",
-                destination: "start",
-            },
-        };
+        const endPoint = new Feature<PointGeometry>(
+            new Point(result[0].geometry.coordinates[0][0][1], result[0].geometry.coordinates[0][0][0]).toGeometry,
+            { "marker-color": "#6ad15a" },
+        );
 
-        const featureCollectionForNetwork = this.buildFeature(bikeLine);
-        const network = new PathFinder(featureCollectionForNetwork);
-        const path = network.findPath(startPoint, endPoint);
+        const featureNetwork = new FeatureCollection();
+        featureNetwork.addFromList(bikeLine, (item: any) => {
+            return new Feature<LineStringGeometry>(new LineString(item.geometry.coordinates[0]).toGeometry, {
+                id: item.id,
+                hasRestaurants: item.hasRestaurants,
+                restaurants: item.hasRestaurants ? item.restaurants : [],
+            }).toModel;
+        });
 
+        const network = new PathFinder(featureNetwork.toModel, {
+            edgeDataReduceFn: (a: any, p: any) => {
+                a.push({ id: p.id, restaurants: p.restaurants });
+                return a;
+            },
+            edgeDataSeed: [],
+        });
+        const path = network.findPath(startPoint.toModel, endPoint.toModel);
+
+        path.edgeDatas[0].reducedEdge.forEach((item: any) => {
+            if (item.restaurants && item.restaurants.length > 0) {
+                logger.info("Has restaurants");
+            }
+        });
         const distance: number = this.calculateDistance(path.path);
         const featurePath: any = this.buildFeatureA(path, distance);
-        featurePath.features.push(startPoint);
-        featurePath.features.push(endPoint);
+        featurePath.features.push(startPoint.toModel);
+        featurePath.features.push(endPoint.toModel);
 
         return featurePath;
     }
@@ -138,7 +142,11 @@ export default class JourneyController {
             features.push({
                 type: "Feature",
                 geometry: newItem(item.geometry.coordinates[0]),
-                properties: { id: item.id },
+                properties: {
+                    id: item.id,
+                    hasRestaurants: item.hasRestaurants,
+                    restaurants: item.hasRestaurants ? item.restaurants : [],
+                },
             });
         });
 

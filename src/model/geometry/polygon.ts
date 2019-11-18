@@ -1,9 +1,9 @@
-export interface GeoPolygonModel {
+export interface PolygonGeometry {
     type: string;
     coordinates: number[][][];
 }
 
-export default class GeoPolygon {
+export default class Polygon {
     coordinates: number[][][];
     type: string;
 
@@ -12,7 +12,7 @@ export default class GeoPolygon {
         this.type = "Polygon";
     }
 
-    get toModel(): GeoPolygonModel {
+    get toGeometry(): PolygonGeometry {
         return {
             type: this.type,
             coordinates: this.coordinates,

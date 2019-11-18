@@ -1,20 +1,20 @@
-export interface GeoPointModel {
+export interface PointGeometry {
     type: string;
     coordinates: number[];
 }
 
-export default class GeoPoint {
-    latitude: number;
-    longitude: number;
-    type: string;
+export default class Point {
+    private readonly latitude: number;
+    private readonly longitude: number;
+    private readonly type: string;
 
     constructor(latitude: number, longitude: number) {
         this.latitude = typeof latitude === "string" ? parseFloat(latitude) : latitude;
         this.longitude = typeof longitude === "string" ? parseFloat(longitude) : longitude;
-        this.type = "GeoPoint";
+        this.type = "Point";
     }
 
-    get toModel(): GeoPointModel {
+    get toGeometry(): PointGeometry {
         return {
             type: this.type,
             coordinates: [this.longitude, this.latitude],

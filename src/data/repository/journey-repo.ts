@@ -1,17 +1,17 @@
 import Repo from "./repo";
 import collections from "../utils/mongoCollection";
-import GeoPoint from "../../model/geo-point";
+import Point from "../../model/geometry/point";
 
 export default class JourneyRepo extends Repo {
     constructor() {
         super(collections.journey);
     }
 
-    async findBikePathNearAPoint(point: GeoPoint, max: number, min: number) {
+    async findBikePathNearAPoint(point: Point, max: number, min: number) {
         const query = {
             geometry: {
                 $nearSphere: {
-                    $geometry: point.toModel,
+                    $geometry: point.toGeometry,
                     $maxDistance: max,
                     $minDistance: min
                 }

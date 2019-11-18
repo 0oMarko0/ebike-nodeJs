@@ -1,5 +1,5 @@
 import RestaurantRepo from "../data/repository/restaurant-repo";
-import GeoPoint from "../model/geo-point";
+import Point from "../model/geo-point";
 import _ from "lodash";
 
 export default class RestaurantController {
@@ -14,7 +14,7 @@ export default class RestaurantController {
 
     async getRestaurantNearAPoint(query: any) {
         if (!this.isQueryParamValid(query)) throw new Error("Missing required param: lat, lon, radius");
-        const point: GeoPoint = new GeoPoint(query.lat, query.lon);
+        const point: Point = new Point(query.lat, query.lon);
 
         return await this.restaurantRepo.getRestaurantNearAPoint(
             point,
