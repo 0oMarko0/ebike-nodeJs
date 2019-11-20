@@ -52,7 +52,7 @@ export default class PathFinding {
         this.finishingPointList.forEach((finish: Feature<PointGeometry>) => {
             const path = this.findPath(this.startingPoint, finish);
 
-            const restaurantList = this.restaurantList(path)
+            const restaurantList = this.restaurantList(path, type);
             featureCollection.add(this.pathResultToFeature(path).toModel);
         });
 
@@ -116,7 +116,7 @@ export default class PathFinding {
     }
 
     // TODO: Refactor
-    private inArray(item:any, array: any[]): boolean {
+    private inArray(item: any, array: any[]): boolean {
         let inArray = false;
         array.forEach(value => {
             if (value === item) inArray = true;
