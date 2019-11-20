@@ -1,14 +1,7 @@
 import JourneyRepo from "../data/repository/journey-repo";
 import StatisticsRepo from "../data/repository/statistics-repo";
 import BikePathRepo from "../data/repository/bike-path";
-const PathFinder = require("geojson-path-finder");
-import * as turf from "@turf/turf";
-import logger from "../utils/logger";
 import Point, { PointGeometry } from "../model/geometry/point";
-import Feature from "../model/feature";
-import { FeatureCollection, FeatureCollectionModel } from "../model/feature-collection";
-import LineString, { LineStringGeometry } from "../model/geometry/line-string";
-import { Journey, toFeatureCollection, toLineStringFeature } from "../model/journey";
 import PathFinding from "../utils/algo/PathFinding";
 
 export default class JourneyController {
@@ -40,6 +33,8 @@ export default class JourneyController {
         const point = new Point(longitude, latitude);
         const maxDistance = body.maximumLength * 1.1;
         const minDistance = body.maximumLength * 0.9;
+        const numberOfStop = body.numberOfStops;
+        const type = body.type;
 
         const bikeLine = await this.journeyRepo.findBikePathNearAPoint(point, maxDistance, 0);
         const start = await this.journeyRepo.findBikePathNearAPoint(point, 250, 0);
@@ -47,94 +42,10 @@ export default class JourneyController {
 
         const pathFinding = new PathFinding(start, result, bikeLine);
 
-        const path = pathFinding.findPath(pathFinding.startingPoint(), pathFinding.finishPoint());
+        const path = pathFinding.findPath(pathFinding.start, pathFinding.finish);
 
-        path.edgeDatas[0].reducedEdge.forEach((item: any) => {
-            if (item.restaurants && item.restaurants.length > 0) {
-                logger.info("Has restaurants");
-            }
-        });
-
-        const test = pathFinding.edgeData(path);
-
-        const distance: number = this.calculateDistance(path.path);
-        const featurePath: any = this.buildFeatureA(path, distance);
-        featurePath.features.push(pathFinding.startingPoint().toModel);
-        featurePath.features.push(pathFinding.finishPoint().toModel);
-
-        // return featurePath;
-        return pathFinding.featureCollectionAllPoint();
-    }
-
-    private calculateDistance(coordinates: number[][]) {
-        let total = 0;
-        for (let i = 1; i < coordinates.length; i++) {
-            const startingPoint = coordinates[i - 1];
-            const finishingPoint = coordinates[i];
-            const from = turf.point(startingPoint);
-            const to = turf.point(finishingPoint);
-            const distance = turf.distance(from, to);
-            total = total + distance;
-        }
-
-        return total;
-    }
-
-    private buildFeatureA(journey: any, distance: number) {
-        let features: any[] = [];
-        const featureCollection = {
-            type: "FeatureCollection",
-            name: "Network",
-        };
-
-        const newItem = (coords: any) => ({
-            type: "LineString",
-            coordinates: coords,
-        });
-
-        const test = () => ({
-            type: "Feature",
-            geometry: newItem(journey.path),
-            properties: {
-                distance,
-            },
-        });
-
-        features.push(test());
-
-        Object.assign(featureCollection, {
-            features: features,
-        });
-
-        return featureCollection;
-    }
-
-    private buildFeature(journey: any[]) {
-        let features: any[] = [];
-        const featureCollection = {
-            type: "FeatureCollection",
-            name: "Network",
-        };
-
-        journey.forEach(item => {
-            const newItem = (coords: any) => ({
-                type: "LineString",
-                coordinates: coords,
-            });
-            features.push({
-                type: "Feature",
-                geometry: newItem(item.geometry.coordinates[0]),
-                properties: {
-                    id: item.id,
-                    hasRestaurants: item.hasRestaurants,
-                    restaurants: item.hasRestaurants ? item.restaurants : [],
-                },
-            });
-        });
-
-        Object.assign(featureCollection, { features: features });
-
-        return featureCollection;
+        return pathFinding.findPathWithRestaurant(maxDistance, numberOfStop, type);
+        // return pathFinding.findAllPossiblePath();
     }
 
     async getHeartBeat() {
