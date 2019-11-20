@@ -8,6 +8,8 @@ import Point, { PointGeometry } from "../model/geometry/point";
 import Feature from "../model/feature";
 import { FeatureCollection, FeatureCollectionModel } from "../model/feature-collection";
 import LineString, { LineStringGeometry } from "../model/geometry/line-string";
+import { Journey, toFeatureCollection, toLineStringFeature } from "../model/journey";
+import PathFinding from "../utils/algo/PathFinding";
 
 export default class JourneyController {
     private journeyRepo: JourneyRepo;
@@ -35,7 +37,7 @@ export default class JourneyController {
 
     async createAJourney(body: any) {
         const { latitude, longitude } = body.startingPoint.coordinates;
-        const point = new Point(latitude, longitude);
+        const point = new Point(longitude, latitude);
         const maxDistance = body.maximumLength * 1.1;
         const minDistance = body.maximumLength * 0.9;
 
@@ -43,45 +45,25 @@ export default class JourneyController {
         const start = await this.journeyRepo.findBikePathNearAPoint(point, 250, 0);
         const result = await this.journeyRepo.findBikePathNearAPoint(point, maxDistance, minDistance);
 
-        const startPoint = new Feature<PointGeometry>(
-            new Point(start[0].geometry.coordinates[0][0][1], start[0].geometry.coordinates[0][0][0]).toGeometry,
-            { "marker-color": "#d100aa" },
-        );
+        const pathFinding = new PathFinding(start, result, bikeLine);
 
-        const endPoint = new Feature<PointGeometry>(
-            new Point(result[0].geometry.coordinates[0][0][1], result[0].geometry.coordinates[0][0][0]).toGeometry,
-            { "marker-color": "#6ad15a" },
-        );
-
-        const featureNetwork = new FeatureCollection();
-        featureNetwork.addFromList(bikeLine, (item: any) => {
-            return new Feature<LineStringGeometry>(new LineString(item.geometry.coordinates[0]).toGeometry, {
-                id: item.id,
-                hasRestaurants: item.hasRestaurants,
-                restaurants: item.hasRestaurants ? item.restaurants : [],
-            }).toModel;
-        });
-
-        const network = new PathFinder(featureNetwork.toModel, {
-            edgeDataReduceFn: (a: any, p: any) => {
-                a.push({ id: p.id, restaurants: p.restaurants });
-                return a;
-            },
-            edgeDataSeed: [],
-        });
-        const path = network.findPath(startPoint.toModel, endPoint.toModel);
+        const path = pathFinding.findPath(pathFinding.startingPoint(), pathFinding.finishPoint());
 
         path.edgeDatas[0].reducedEdge.forEach((item: any) => {
             if (item.restaurants && item.restaurants.length > 0) {
                 logger.info("Has restaurants");
             }
         });
+
+        const test = pathFinding.edgeData(path);
+
         const distance: number = this.calculateDistance(path.path);
         const featurePath: any = this.buildFeatureA(path, distance);
-        featurePath.features.push(startPoint.toModel);
-        featurePath.features.push(endPoint.toModel);
+        featurePath.features.push(pathFinding.startingPoint().toModel);
+        featurePath.features.push(pathFinding.finishPoint().toModel);
 
-        return featurePath;
+        // return featurePath;
+        return pathFinding.featureCollectionAllPoint();
     }
 
     private calculateDistance(coordinates: number[][]) {

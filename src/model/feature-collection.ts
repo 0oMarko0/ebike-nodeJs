@@ -1,4 +1,4 @@
-import Feature, { FeatureModel } from "./feature";
+import { FeatureModel } from "./feature";
 
 export interface FeatureCollectionModel {
     type: string;
@@ -29,38 +29,15 @@ export class FeatureCollection {
         this.features.push(feature);
     }
 
-    addFromList(featureList: any[], map: Function) {
-        featureList.forEach((feature) => {
-           this.features.push(map(feature));
-        });
-    }
-
-
-    private buildFeature(journey: any[]) {
-        let features: any[] = [];
-        const featureCollection = {
-            type: "FeatureCollection",
-            name: "Network",
-        };
-
-        journey.forEach(item => {
-            const newItem = (coords: any) => ({
-                type: "LineString",
-                coordinates: coords,
+    addFromList(featureList: any[], map?: Function) {
+        if (map) {
+            featureList.forEach(feature => {
+                this.features.push(map(feature));
             });
-            features.push({
-                type: "Feature",
-                geometry: newItem(item.geometry.coordinates[0]),
-                properties: {
-                    id: item.id,
-                    hasRestaurants: item.hasRestaurants,
-                    restaurants: item.hasRestaurants ? item.restaurants : [],
-                },
+        } else {
+            featureList.forEach(feature => {
+                this.features.push(feature);
             });
-        });
-
-        Object.assign(featureCollection, { features: features });
-
-        return featureCollection;
+        }
     }
 }
