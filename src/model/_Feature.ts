@@ -4,7 +4,7 @@ export interface FeatureModel<t> {
     properties: any;
 }
 
-export default class Feature<t> {
+export default class _Feature<t> {
     private readonly type: string;
     private readonly properties: any;
     private readonly geometry: t;

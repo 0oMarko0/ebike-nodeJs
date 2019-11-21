@@ -1,6 +1,8 @@
 import RestaurantRepo from "../data/repository/restaurant-repo";
-import Point from "../model/geo-point";
 import _ from "lodash";
+import Point from "../model/geometry/point";
+import { toFeaturePoints } from "../model/restaurant";
+import { FeatureCollection } from "../model/feature-collection";
 
 export default class RestaurantController {
     private restaurantRepo: RestaurantRepo;
@@ -14,11 +16,19 @@ export default class RestaurantController {
 
     async getRestaurantNearAPoint(query: any) {
         if (!this.isQueryParamValid(query)) throw new Error("Missing required param: lat, lon, radius");
-        const point: Point = new Point(query.lat, query.lon);
+        const point: Point = new Point(query.lon, query.lat);
 
+        const restaurants = await this.getRestaurant(point, query.radius, query);
+
+        const featureCollection = new FeatureCollection();
+        featureCollection.addFromList(toFeaturePoints(restaurants));
+        return featureCollection.toModel;
+    }
+
+    async getRestaurant(point: Point, radius: any, query?: any) {
         return await this.restaurantRepo.getRestaurantNearAPoint(
             point,
-            parseInt(query.radius),
+            parseInt(radius),
             this.hasMoreParam(query) ? this.buildFilter(query) : undefined,
         );
     }
@@ -28,7 +38,7 @@ export default class RestaurantController {
     }
 
     private hasMoreParam(query: any) {
-        return Object.keys(query).length > 3;
+        return query && Object.keys(query).length > 3;
     }
 
     private buildFilter(query: any) {

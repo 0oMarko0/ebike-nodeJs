@@ -3,6 +3,9 @@ import StatisticsRepo from "../data/repository/statistics-repo";
 import BikePathRepo from "../data/repository/bike-path";
 import Point, { PointGeometry } from "../model/geometry/point";
 import PathFinding from "../utils/algo/PathFinding";
+import RestaurantController from "./restaurant-controller";
+import Registry from "../utils/registry";
+import { Injectable } from "../utils/injectable";
 
 export default class JourneyController {
     private journeyRepo: JourneyRepo;
@@ -29,6 +32,7 @@ export default class JourneyController {
     // 5. filter those that have the requirement
 
     async createAJourney(body: any) {
+        const restaurantController: RestaurantController = Registry.resolve(Injectable.RestaurantController);
         const { latitude, longitude } = body.startingPoint.coordinates;
         const point = new Point(longitude, latitude);
         const maxDistance = body.maximumLength * 1.1;
@@ -40,12 +44,11 @@ export default class JourneyController {
         const start = await this.journeyRepo.findBikePathNearAPoint(point, 250, 0);
         const result = await this.journeyRepo.findBikePathNearAPoint(point, maxDistance, minDistance);
 
-        const pathFinding = new PathFinding(start, result, bikeLine);
+        const restaurants = await restaurantController.getRestaurant(point, maxDistance, {cuisine: "pizza"});
 
-        const path = pathFinding.findPath(pathFinding.start, pathFinding.finish);
+        const pathFinding = new PathFinding(start, result, bikeLine, restaurants);
 
         return pathFinding.findPathWithRestaurant(maxDistance, numberOfStop, type);
-        // return pathFinding.findAllPossiblePath();
     }
 
     async getHeartBeat() {

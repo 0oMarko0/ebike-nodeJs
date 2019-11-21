@@ -43,6 +43,7 @@
         "typescript": "^3.6.2"
     },
     "dependencies": {
+        "@turf/length": "^6.0.2",
         "@turf/turf": "^5.1.6",
         "@types/bcryptjs": "^2.4.2",
         "@types/cors": "^2.8.6",

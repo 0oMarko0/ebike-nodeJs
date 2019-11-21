@@ -1,6 +1,6 @@
 import Repo from "./repo";
 import collections from "../utils/mongoCollection";
-import Point from "../../model/geo-point";
+import Point from "../../model/geometry/point";
 
 export default class RestaurantRepo extends Repo {
     constructor() {
@@ -15,7 +15,7 @@ export default class RestaurantRepo extends Repo {
         const query = {
             geometry: {
                 $nearSphere: {
-                    $geometry: geoPoint.toModel,
+                    $geometry: geoPoint.toGeometry,
                     $maxDistance: maxDistance
                 }
             }

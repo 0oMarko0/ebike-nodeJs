@@ -1,4 +1,4 @@
-const radius = 100;
+const radius = 50;
 const radiusToRadianMultiplier = 1 / 98000;
 
 export const calculatePolygon = (lineString: number[][]) => {

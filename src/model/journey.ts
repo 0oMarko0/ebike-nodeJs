@@ -1,5 +1,5 @@
 import { MultiLineStringGeometry } from "./geometry/mutli-line-string";
-import Feature from "./feature";
+import _Feature from "./_Feature";
 import LineString, { LineStringGeometry } from "./geometry/line-string";
 import { Restaurant } from "./restaurant";
 import { FeatureCollection, FeatureCollectionModel } from "./feature-collection";
@@ -17,8 +17,8 @@ export interface Journey {
     restaurants: Restaurant[];
 }
 
-export const toLineStringFeature = (journey: Journey): Feature<LineStringGeometry> => {
-    return new Feature<LineStringGeometry>(
+export const toLineStringFeature = (journey: Journey): _Feature<LineStringGeometry> => {
+    return new _Feature<LineStringGeometry>(
         new LineString(flattenCoordinates(journey.geometry.coordinates)).toGeometry,
         {
             id: journey.id,

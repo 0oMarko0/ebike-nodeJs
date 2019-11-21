@@ -1,4 +1,4 @@
-import { FeatureModel } from "./feature";
+import { FeatureModel } from "./_Feature";
 
 export interface FeatureCollectionModel {
     type: string;
