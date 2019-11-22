@@ -44,11 +44,12 @@ export default class JourneyController {
         const start = await this.journeyRepo.findBikePathNearAPoint(point, 250, 0);
         const result = await this.journeyRepo.findBikePathNearAPoint(point, maxDistance, minDistance);
 
-        const restaurants = await restaurantController.getRestaurant(point, maxDistance, {cuisine: "pizza"});
+        // Pass a array of type
+        const restaurants = await restaurantController.getRestaurant(point, maxDistance, { cuisine: "pizza" });
 
         const pathFinding = new PathFinding(start, result, bikeLine, restaurants);
 
-        return pathFinding.findPathWithRestaurant(maxDistance, numberOfStop, type);
+        return pathFinding.findPathWithRestaurant(maxDistance, numberOfStop);
     }
 
     async getHeartBeat() {

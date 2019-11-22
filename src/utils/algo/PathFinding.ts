@@ -1,16 +1,15 @@
 import * as turf from "@turf/turf";
-import { Feature, GeometryCollection, Units } from "@turf/helpers";
+import { Feature } from "@turf/helpers";
 
 const PathFinder = require("geojson-path-finder");
 import Point, { PointGeometry } from "../../model/geometry/point";
 import { Journey, toFeatureCollection } from "../../model/journey";
 import _Feature from "../../model/_Feature";
-import { FeatureCollection, FeatureCollectionModel } from "../../model/feature-collection";
-import LineString, { LINE_STRING, LineStringGeometry } from "../../model/geometry/line-string";
-import { Restaurant, toFeaturePoint, toFeaturePoints } from "../../model/restaurant";
+import { FeatureCollection } from "../../model/feature-collection";
+import LineString, { LineStringGeometry } from "../../model/geometry/line-string";
+import { Restaurant, toFeaturePoints } from "../../model/restaurant";
 import logger from "../logger";
 import _ from "lodash";
-
 
 interface PathResult {
     path: number[][];
@@ -30,11 +29,9 @@ export default class PathFinding {
     private readonly restaurantsInArea: Restaurant[];
     private network: any;
 
-    get start(): _Feature<PointGeometry> {
-        return this.startingPoint;
-    }
-
     constructor(startingArea: Journey[], finishingArea: Journey[], searchArea: Journey[], restaurants: Restaurant[]) {
+        if(startingArea.length === 0) throw new Error("Could not found a starting point, try a new location");
+
         this.startingPointList = this.findAllPoint(startingArea, "#5fd173");
         this.finishingPointList = this.findAllPoint(finishingArea);
         this.startingPoint = this.calculatePoint(startingArea, "#6ad15a");
@@ -44,51 +41,13 @@ export default class PathFinding {
         this.createNetwork(searchArea);
     }
 
+    get start(): _Feature<PointGeometry> {
+        return this.startingPoint;
+    }
+
     public findPath(start: _Feature<PointGeometry>, end: _Feature<PointGeometry>) {
         return this.network.findPath(start, end);
     }
-
-    // public findPathToRestaurant(maxDistance: number, numberOfStop: number, type: string[]) {
-    //     if (numberOfStop < 0) throw Error("The number of stop must be grater than 0");
-    //
-    //     const featureCollection = new FeatureCollection();
-    //     let found = false;
-    //     let i = 0;
-    //
-    //     while (i < this.restaurantsInArea.length) {
-    //         const finishPoint = toFeaturePoint(this.restaurantsInArea[i]);
-    //         let path;
-    //
-    //         try {
-    //             path = this.findPath(this.startingPoint, finishPoint);
-    //             featureCollection.add(this.pathResultToFeature(path).toModel);
-    //             found = true;
-    //         } catch (e) {
-    //             logger.warn("Unable to find path");
-    //         }
-    //
-    //         i++;
-    //     }
-    //
-    //     return featureCollection;
-    // }
-
-    private sortRestaurants(path: PathResult): Restaurant[] {
-        const line = turf.lineString(path.path);
-
-        const restaurantByDistance: Restaurant[] =  [];
-
-        this.restaurantsInArea.forEach((restaurant: Restaurant) => {
-            const point = turf.point(restaurant.geometry.coordinates);
-            const calculatedDistance = turf.pointToLineDistance(point, line);
-
-            restaurantByDistance.push(Object.assign(restaurant, {distance: calculatedDistance}));
-
-        });
-
-        return  _.sortBy(restaurantByDistance, "distance");
-    }
-
 
     public findPathWithRestaurant(maxDistance: number, numberOfStop: number) {
         if (numberOfStop < 0) throw Error("The number of stop must be grater than 0");
@@ -102,7 +61,7 @@ export default class PathFinding {
                 const feature: Feature<LineString> = this.pathResultToFeature(path);
                 const distance = turf.length(feature) * 1000;
 
-                if ((maxDistance * 1.10) > distance && distance > (maxDistance * .90)) {
+                if (maxDistance * 1.1 > distance && distance > maxDistance * 0.9) {
                     logger.info(`Path found with length: ${distance}`);
                     featureCollection.add(this.pathResultToFeature(path).toModel);
                     featureCollection.addFromList(toFeaturePoints(this.sortRestaurants(path).slice(0, numberOfStop)));
@@ -111,44 +70,42 @@ export default class PathFinding {
                     throw new Error("The path found isn't the right length");
                 }
             } catch (e) {
-               logger.warn(`Unable To Find Path - Trying another finish point: ${e.message}`);
+                logger.warn(`Unable To Find Path - Trying another finish point: ${e.message}`);
             }
         }
 
         return featureCollection;
-
     }
 
-    // public findPathWithRestaurant(maxDistance: number, numberOfStop: number, type: string[]) {
-    //     if (numberOfStop < 0) throw Error("The number of stop must be grater than 0");
-    //
-    //     const featureCollection = new FeatureCollection();
-    //     let found = false;
-    //     let i = 0;
-    //
-    //     while (!found) {
-    //         const path = this.findPath(this.startingPoint, this.finishingPointList[i]);
-    //         const restaurantList = this.restaurantList(path, type);
-    //
-    //         if (restaurantList.length >= numberOfStop) {
-    //             featureCollection.add(this.pathResultToFeature(path).toModel);
-    //             featureCollection.addFromList(toFeaturePoints(restaurantList.slice(0, numberOfStop)));
-    //
-    //             found = true;
-    //         } else {
-    //             throw new Error("The path does not contain the number of stop requested");
-    //         }
-    //
-    //         if (i < restaurantList.length) {
-    //             i++;
-    //         } else {
-    //             break;
-    //         }
-    //     }
-    //
-    //     featureCollection.addFromList(toFeaturePoints(this.restaurantsInArea));
-    //     return featureCollection;
-    // }
+    public restaurantList(pathResult: PathResult, type: string[]): Restaurant[] {
+        const edgeData = this.edgeData(pathResult);
+        const restaurantList: Restaurant[] = [];
+
+        edgeData.forEach((item: EdgeData) => {
+            item.restaurants.forEach(restaurant => {
+                if (this.inArray(restaurant.cuisine, type)) {
+                    restaurantList.push(restaurant);
+                }
+            });
+        });
+
+        return restaurantList;
+    }
+
+    private sortRestaurants(path: PathResult): Restaurant[] {
+        const line = turf.lineString(path.path);
+
+        const restaurantByDistance: Restaurant[] = [];
+
+        this.restaurantsInArea.forEach((restaurant: Restaurant) => {
+            const point = turf.point(restaurant.geometry.coordinates);
+            const calculatedDistance = turf.pointToLineDistance(point, line);
+
+            restaurantByDistance.push(Object.assign(restaurant, { distance: calculatedDistance }));
+        });
+
+        return _.sortBy(restaurantByDistance, "distance");
+    }
 
     private calculatePoint(area: Journey[], color?: string): _Feature<PointGeometry> {
         return new _Feature<PointGeometry>(
@@ -217,38 +174,9 @@ export default class PathFinding {
         return notInTheArray;
     }
 
-    public restaurantList(pathResult: PathResult, type: string[]): Restaurant[] {
-        const edgeData = this.edgeData(pathResult);
-        const restaurantList: Restaurant[] = [];
-
-        edgeData.forEach((item: EdgeData) => {
-            item.restaurants.forEach(restaurant => {
-                if (this.inArray(restaurant.cuisine, type)) {
-                    restaurantList.push(restaurant);
-                }
-            });
-        });
-
-        return restaurantList;
-    }
-
     private pathResultToFeature(pathResult: PathResult): _Feature<LineStringGeometry> {
         return new _Feature<LineStringGeometry>(new LineString(pathResult.path).toGeometry, {
             data: this.edgeData(pathResult),
         });
-    }
-
-    private calculateDistance(coordinates: number[][]) {
-        let total = 0;
-        for (let i = 1; i < coordinates.length; i++) {
-            const startingPoint = coordinates[i - 1];
-            const finishingPoint = coordinates[i];
-            const from = turf.point(startingPoint);
-            const to = turf.point(finishingPoint);
-            const distance = turf.distance(from, to);
-            total = total + distance;
-        }
-
-        return total;
     }
 }

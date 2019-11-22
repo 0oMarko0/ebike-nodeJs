@@ -5,6 +5,8 @@ import Registry from "../utils/registry";
 import { Injectable } from "../utils/injectable";
 import BikePathController from "../controller/bike-path-controller";
 import AuthMiddleware from "../middleware/authentication";
+import logger from "../utils/logger";
+import formatError from "../utils/error";
 
 const router = express.Router();
 
@@ -25,7 +27,12 @@ router.get("/bike-path/:city", AuthMiddleware, async (req: Request, res: Respons
 
 router.post("/", AuthMiddleware, async (req: Request, res: Response) => {
     const journeyController: JourneyController = Registry.resolve(Injectable.JourneyController);
-    res.send(await journeyController.createAJourney(req.body));
+    try {
+        res.send(await journeyController.createAJourney(req.body));
+    } catch (e) {
+        logger.error(e.message);
+        res.status(400).send(formatError(e.message, req, 400));
+    }
 });
 
 export default router;
