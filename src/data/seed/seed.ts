@@ -1,11 +1,13 @@
-import BikePathSeed from "./bike-path-seed";
+import BikePathSeed from "./collection-seed/bike-path-seed";
 import BikePathRepo from "../repository/bike-path";
 import JourneyRepo from "../repository/journey-repo";
-import JourneySeed from "./journey-seed";
+import JourneySeed from "./collection-seed/journey-seed";
 import Registry from "../../utils/registry";
 import { Injectable } from "../../utils/injectable";
-import RestaurantSeed from "./restaurant-seed";
+import RestaurantSeed from "./collection-seed/restaurant-seed";
 import RestaurantRepo from "../repository/restaurant-repo";
+import logger from "../../utils/logger";
+import { transformation } from "./transformation/restaurant";
 
 export default class Seed {
     private readonly journeyRepo: JourneyRepo;
@@ -17,14 +19,19 @@ export default class Seed {
         this.bikePathRepo = Registry.resolve(Injectable.BikePathRepo);
         this.journeyRepo = Registry.resolve(Injectable.JourneyRepo);
         this.restaurantRepo = Registry.resolve(Injectable.RestaurantRepo);
+
         this.repoToSeed.push(new BikePathSeed(this.bikePathRepo));
         this.repoToSeed.push(new JourneySeed(this.journeyRepo));
         this.repoToSeed.push(new RestaurantSeed(this.restaurantRepo));
     }
 
-    start() {
-        this.repoToSeed.forEach(repo => {
-            repo.start();
-        });
-    }
+    start = async () => {
+        return Promise.all(
+            this.repoToSeed.map(async repo => {
+                await repo.start();
+            }),
+        ).then(async () => {
+           await transformation();
+        }).catch((e) => logger.error(`Error while seeding: ${e}`));
+    };
 }

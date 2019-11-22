@@ -1,6 +1,6 @@
-import ReadFile from "./readFile";
-import BikePathRepo from "../repository/bike-path";
-import logger from "../../utils/logger";
+import ReadFile from "../../../utils/readFile";
+import BikePathRepo from "../../repository/bike-path";
+import logger from "../../../utils/logger";
 import { log } from "util";
 
 export default class BikePathSeed extends ReadFile {
@@ -11,7 +11,7 @@ export default class BikePathSeed extends ReadFile {
     }
 
     async start() {
-        const bikePath = this.readFromfile("montreal-bike-path.geojson");
+        const bikePath = this.readFromfile("./seeding-data/montreal-bike-path.geojson");
         await this.bikePathRepo.drop();
         try {
             await this.bikePathRepo.create(Object.assign(bikePath, { city: "montreal" }));

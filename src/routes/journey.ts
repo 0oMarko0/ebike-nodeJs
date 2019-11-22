@@ -1,26 +1,38 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import express from "express";
+import express, { Request, Response } from "express";
 import JourneyController from "../controller/journey-controller";
 import Registry from "../utils/registry";
 import { Injectable } from "../utils/injectable";
 import BikePathController from "../controller/bike-path-controller";
 import AuthMiddleware from "../middleware/authentication";
+import logger from "../utils/logger";
+import formatError from "../utils/error";
 
 const router = express.Router();
 
-router.get("/starting-point", (req, res) => {
+router.get("/starting-point", (req: Request, res: Response) => {
     const journeyController: JourneyController = Registry.resolve(Injectable.JourneyController);
     res.send({ starting_point: journeyController.startingPoint() }).status(200);
 });
 
-router.get("/citys", AuthMiddleware, (req, res) => {
+router.get("/citys", AuthMiddleware, (req: Request, res: Response) => {
     const journeyController: JourneyController = Registry.resolve(Injectable.JourneyController);
     res.send(journeyController.getCitys()).status(200);
 });
 
-router.get("/bike-path/:city", AuthMiddleware, async (req, res) => {
+router.get("/bike-path/:city", AuthMiddleware, async (req: Request, res: Response) => {
     const bikePathController: BikePathController = Registry.resolve(Injectable.BikePathController);
     res.send(await bikePathController.getBikePathForCity(req.params.city));
+});
+
+router.post("/", AuthMiddleware, async (req: Request, res: Response) => {
+    const journeyController: JourneyController = Registry.resolve(Injectable.JourneyController);
+    try {
+        res.send(await journeyController.createAJourney(req.body));
+    } catch (e) {
+        logger.error(e.message);
+        res.status(400).send(formatError(e.message, req, 400));
+    }
 });
 
 export default router;

@@ -12,9 +12,12 @@ const server = new Promise((resolve, reject) => {
     MongoDB.connect()
         .then(async () => {
             dip.bootstrap();
-            const seed = new Seed();
-            await seed.start();
-            buildIndex();
+            if (process.env.SEED_DB === "true") {
+                const seed = new Seed();
+                seed.start()
+                    .then(() => buildIndex())
+                    .catch(e => logger.error(`SEED error: ${e}`));
+            }
             app.listen(app.get("port"), () => {
                 logger.info(
                     chalk.green(`App is running at http://localhost:${app.get("port")} in ${app.get("env")} mode`),
