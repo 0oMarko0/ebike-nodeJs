@@ -26,10 +26,11 @@ export default class RestaurantController {
     }
 
     async getRestaurant(point: Point, radius: any, query?: any) {
+        const test = this.buildFilter(query);
         return await this.restaurantRepo.getRestaurantNearAPoint(
             point,
             parseInt(radius),
-            this.hasMoreParam(query) ? this.buildFilter(query) : undefined,
+            test,
         );
     }
 
