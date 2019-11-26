@@ -10,8 +10,19 @@ export default class RestaurantController {
         this.restaurantRepo = restaurantRepo;
     }
 
-    getRestaurantType() {
-        return this.restaurantRepo.getRestaurantType();
+    async getRestaurantType() {
+        let restaurantType: string[] = [];
+        const result =  await this.restaurantRepo.getRestaurantType();
+
+        result.forEach((item) => {
+            item._id.forEach((type: string) => {
+                if(this.notInt(type, restaurantType)) {
+                    restaurantType.push(type);
+                }
+            })
+        });
+
+        return restaurantType;
     }
 
     async getRestaurantNearAPoint(query: any) {
@@ -32,10 +43,6 @@ export default class RestaurantController {
 
     private isQueryParamValid(query: any) {
         return _.has(query, "lat") && _.has(query, "lon") && _.has(query, "radius");
-    }
-
-    private hasMoreParam(query: any) {
-        return query && Object.keys(query).length > 3;
     }
 
     private buildFilter(query: any) {

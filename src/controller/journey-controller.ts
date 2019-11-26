@@ -21,22 +21,13 @@ export default class JourneyController {
         return new Point(46.77656, -71.2718).toGeometry;
     }
 
-    // Algo
-    // Validate that the restaurant type if valid if the section
-    // 1. Build the local network
-    //      1.1 validate that there restaurant type in that area ? -> or validate later ?
-    // 2. find the nearest position the is a bike line
-    // 3. find all finish position
-    // 4. build all possible path -> may be quite expressive to do
-    //      4.1 chose all those that respect the condition
-    // 5. filter those that have the requirement
-
     async createAJourney(body: any) {
         const restaurantController: RestaurantController = Registry.resolve(Injectable.RestaurantController);
         const { latitude, longitude } = body.startingPoint.coordinates;
         const point = new Point(longitude, latitude);
-        const maxDistance = body.maximumLength * 1.1;
-        const minDistance = body.maximumLength * 0.9;
+        const distance = body.maximumLength;
+        const maxDistance = distance * 1.1;
+        const minDistance = distance * 0.9;
         const numberOfStop = body.numberOfStops;
         const type = body.type;
 
@@ -52,7 +43,7 @@ export default class JourneyController {
 
         const pathFinding = new PathFinding(start, result, bikeLine, restaurants);
 
-        return pathFinding.findPathWithRestaurant(maxDistance, numberOfStop);
+        return pathFinding.findPathWithRestaurant(distance, numberOfStop);
     }
 
     async getHeartBeat() {
