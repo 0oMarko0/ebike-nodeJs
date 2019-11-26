@@ -11,7 +11,18 @@ export default class RestaurantController {
     }
 
     async getRestaurantType() {
-        return await this.restaurantRepo.getRestaurantType();
+        let restaurantType: string[] = [];
+        const result =  await this.restaurantRepo.getRestaurantType();
+
+        result.forEach((item) => {
+            item._id.forEach((type: string) => {
+                if(this.notInt(type, restaurantType)) {
+                    restaurantType.push(type);
+                }
+            })
+        });
+
+        return restaurantType;
     }
 
     async getRestaurantNearAPoint(query: any) {
