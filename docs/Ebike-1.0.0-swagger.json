@@ -39,7 +39,6 @@
             "get": {
                 "tags": ["front-end"],
                 "summary": "Get statistics for the application",
-                "operationId": "searchInventory",
                 "produces": ["application/json"],
                 "responses": {
                     "200": {

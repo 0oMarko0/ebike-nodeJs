@@ -7,9 +7,9 @@ import formatError from "../utils/error";
 
 const router = express.Router();
 
-router.get("/type", (req: Request, res: Response) => {
+router.get("/type", async (req: Request, res: Response) => {
     const restaurantController: RestaurantController = Registry.resolve(Injectable.RestaurantController);
-    res.send(restaurantController.getRestaurantType()).status(200);
+    res.send(await restaurantController.getRestaurantType()).status(200);
 });
 
 router.get("/near", async (req: Request, res: Response) => {

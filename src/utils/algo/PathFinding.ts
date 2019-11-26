@@ -16,11 +16,6 @@ interface PathResult {
     edgeDatas: any[];
 }
 
-interface EdgeData {
-    id: number;
-    restaurants: Restaurant[];
-}
-
 export default class PathFinding {
     private readonly startingPointList: _Feature<PointGeometry>[];
     private readonly finishingPointList: _Feature<PointGeometry>[];
@@ -30,7 +25,7 @@ export default class PathFinding {
     private network: any;
 
     constructor(startingArea: Journey[], finishingArea: Journey[], searchArea: Journey[], restaurants: Restaurant[]) {
-        if(startingArea.length === 0) throw new Error("Could not found a starting point, try a new location");
+        if (startingArea.length === 0) throw new Error("Could not found a starting point, try a new location");
 
         this.startingPointList = this.findAllPoint(startingArea, "#5fd173");
         this.finishingPointList = this.findAllPoint(finishingArea);
@@ -63,7 +58,7 @@ export default class PathFinding {
 
                 if (maxDistance * 1.1 > distance && distance > maxDistance * 0.9) {
                     logger.info(`Path found with length: ${distance}`);
-                    featureCollection.add(this.pathResultToFeature(path).toModel);
+                    featureCollection.add(this.pathResultToFeature(path, distance).toModel);
                     featureCollection.addFromList(toFeaturePoints(this.sortRestaurants(path).slice(0, numberOfStop)));
                     break;
                 } else {
@@ -75,21 +70,6 @@ export default class PathFinding {
         }
 
         return featureCollection;
-    }
-
-    public restaurantList(pathResult: PathResult, type: string[]): Restaurant[] {
-        const edgeData = this.edgeData(pathResult);
-        const restaurantList: Restaurant[] = [];
-
-        edgeData.forEach((item: EdgeData) => {
-            item.restaurants.forEach(restaurant => {
-                if (this.inArray(restaurant.cuisine, type)) {
-                    restaurantList.push(restaurant);
-                }
-            });
-        });
-
-        return restaurantList;
     }
 
     private sortRestaurants(path: PathResult): Restaurant[] {
@@ -115,17 +95,7 @@ export default class PathFinding {
     }
 
     private createNetwork(searchArea: Journey[]) {
-        this.network = new PathFinder(toFeatureCollection(searchArea), {
-            edgeDataReduceFn: (a: any, p: any) => this.dataReduce(a, p),
-            edgeDataSeed: [],
-        });
-    }
-
-    private dataReduce(data: any[], item: any) {
-        if (item.hasRestaurants) {
-            data.push({ id: item.id, restaurants: item.restaurants });
-        }
-        return data;
+        this.network = new PathFinder(toFeatureCollection(searchArea));
     }
 
     private findAllPoint(journey: Journey[], color?: string): _Feature<PointGeometry>[] {
@@ -143,40 +113,7 @@ export default class PathFinding {
         return points;
     }
 
-    private edgeData(pathResult: PathResult): EdgeData[] {
-        return this.removeDuplicateFromEdgeData(pathResult.edgeDatas[0].reducedEdge);
-    }
-
-    private removeDuplicateFromEdgeData(edgeData: EdgeData[]) {
-        const cleanedEdgeData: EdgeData[] = [];
-        edgeData.forEach((item: EdgeData) => {
-            if (this.notIn(item, cleanedEdgeData)) cleanedEdgeData.push(item);
-        });
-
-        return cleanedEdgeData;
-    }
-
-    private inArray(item: any, array: any[]): boolean {
-        let inArray = false;
-        array.forEach(value => {
-            if (value === item) inArray = true;
-        });
-
-        return inArray;
-    }
-
-    private notIn(item: any, array: any[]): boolean {
-        let notInTheArray = true;
-        array.forEach(value => {
-            if (value.id === item.id) notInTheArray = false;
-        });
-
-        return notInTheArray;
-    }
-
-    private pathResultToFeature(pathResult: PathResult): _Feature<LineStringGeometry> {
-        return new _Feature<LineStringGeometry>(new LineString(pathResult.path).toGeometry, {
-            data: this.edgeData(pathResult),
-        });
+    private pathResultToFeature(pathResult: PathResult, distance: number): _Feature<LineStringGeometry> {
+        return new _Feature<LineStringGeometry>(new LineString(pathResult.path).toGeometry, { distance });
     }
 }
