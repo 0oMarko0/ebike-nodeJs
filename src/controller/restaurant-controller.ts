@@ -10,8 +10,8 @@ export default class RestaurantController {
         this.restaurantRepo = restaurantRepo;
     }
 
-    getRestaurantType() {
-        return this.restaurantRepo.getRestaurantType();
+    async getRestaurantType() {
+        return await this.restaurantRepo.getRestaurantType();
     }
 
     async getRestaurantNearAPoint(query: any) {
@@ -32,10 +32,6 @@ export default class RestaurantController {
 
     private isQueryParamValid(query: any) {
         return _.has(query, "lat") && _.has(query, "lon") && _.has(query, "radius");
-    }
-
-    private hasMoreParam(query: any) {
-        return query && Object.keys(query).length > 3;
     }
 
     private buildFilter(query: any) {

@@ -7,8 +7,16 @@ export default class RestaurantRepo extends Repo {
         super(collections.restaurant);
     }
 
-    getRestaurantType() {
-        return ["Italien", "thai", "fast-food"];
+    async getRestaurantType() {
+        const aggregation: any = [
+            {
+                $group: { _id: "$cuisine" },
+            },
+        ];
+
+        return await this.getCollection()
+            .aggregate(aggregation)
+            .toArray();
     }
 
     async getRestaurantNearAPoint(geoPoint: Point, maxDistance: number, filter?: any) {
@@ -16,13 +24,15 @@ export default class RestaurantRepo extends Repo {
             geometry: {
                 $nearSphere: {
                     $geometry: geoPoint.toGeometry,
-                    $maxDistance: maxDistance
-                }
-            }
+                    $maxDistance: maxDistance,
+                },
+            },
         };
 
         if (filter) Object.assign(query, filter);
 
-        return await this.getCollection().find(query).toArray();
+        return await this.getCollection()
+            .find(query)
+            .toArray();
     }
 }

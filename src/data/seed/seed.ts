@@ -6,8 +6,6 @@ import Registry from "../../utils/registry";
 import { Injectable } from "../../utils/injectable";
 import RestaurantSeed from "./collection-seed/restaurant-seed";
 import RestaurantRepo from "../repository/restaurant-repo";
-import logger from "../../utils/logger";
-import { transformation } from "./transformation/restaurant";
 
 export default class Seed {
     private readonly journeyRepo: JourneyRepo;
@@ -30,8 +28,6 @@ export default class Seed {
             this.repoToSeed.map(async repo => {
                 await repo.start();
             }),
-        ).then(async () => {
-           await transformation();
-        }).catch((e) => logger.error(`Error while seeding: ${e}`));
+        );
     };
 }
