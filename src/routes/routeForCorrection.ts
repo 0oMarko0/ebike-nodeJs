@@ -12,7 +12,12 @@ const router = express.Router();
 
 router.get("/heartbeat", async (req: Request, res: Response) => {
     const journeyController: JourneyController = Registry.resolve(Injectable.JourneyController);
-    res.send(await journeyController.getHeartBeat()).status(200);
+    try {
+        res.send(await journeyController.getHeartBeat()).status(200);
+    } catch (e) {
+        logger.error(e.message);
+        res.status(400).send(formatError(e.message, req, 400));
+    }
 });
 
 router.get("/starting-point", async (req: Request, res: Response) => {

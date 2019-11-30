@@ -66,6 +66,7 @@ export default class RestaurantSeed extends ReadFile {
         Object.assign(geometry, { coordinates });
         Object.assign(row, { geometry });
         Object.assign(row, { cuisine: this.restaurantType(row.cuisine) });
+        Object.assign(row, { cote: this.score() });
 
         delete row.tags;
         delete row.id;
@@ -91,5 +92,9 @@ export default class RestaurantSeed extends ReadFile {
         }
 
         return types;
+    }
+
+    private score() {
+        return Math.floor(Math.random() * 5) + 1;
     }
 }

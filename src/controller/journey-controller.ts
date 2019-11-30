@@ -35,10 +35,7 @@ export default class JourneyController {
         while (!found) {
             try {
                 const randomPoint: any = randomPointsOnPolygon(1, polygon);
-                point = new Point(
-                  randomPoint[0].geometry.coordinates[0],
-                  randomPoint[0].geometry.coordinates[1],
-                );
+                point = new Point(randomPoint[0].geometry.coordinates[0], randomPoint[0].geometry.coordinates[1]);
 
                 journey = await this.journeyForCorrection({
                     starting_point: point.toGeometry,
@@ -59,7 +56,7 @@ export default class JourneyController {
         }
 
         return {
-            starting_point: point.toGeometry
+            starting_point: point.toGeometry,
         };
     }
 
@@ -123,7 +120,7 @@ export default class JourneyController {
                     restaurant: {
                         name: feature.properties.data.name,
                         type: feature.properties.data.cuisine[0],
-                        cote: 5,
+                        cote: feature.properties.data.cote,
                     },
                 });
                 segmentList.splice(index, 1, item);
