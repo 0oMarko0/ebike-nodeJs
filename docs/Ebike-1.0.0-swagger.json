@@ -14,7 +14,7 @@
     "paths": {
         "/heartbeat": {
             "get": {
-                "tags": ["user"],
+                "tags": ["Ebike"],
                 "summary": "Get some basic information about the application",
                 "produces": ["application/json"],
                 "responses": {
@@ -32,7 +32,7 @@
         },
         "/parcours": {
             "get": {
-                "tags": ["user"],
+                "tags": ["Ebike"],
                 "summary": "Get a parcours",
                 "produces": ["application/json"],
                 "responses": {
@@ -50,7 +50,7 @@
         },
         "/starting-point": {
             "get": {
-                "tags": ["user"],
+                "tags": ["Ebike"],
                 "summary": "Get a random starting point for a parcours",
                 "produces": ["application/json"],
                 "responses": {
@@ -68,7 +68,7 @@
         },
         "/type": {
             "get": {
-                "tags": ["user"],
+                "tags": ["Ebike"],
                 "summary": "Get all the restaurants types available for a parcours",
                 "produces": ["application/json"],
                 "responses": {
