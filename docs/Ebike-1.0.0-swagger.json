@@ -3,31 +3,26 @@
     "info": {
         "version": "1.0.0",
         "title": "Ebike API",
-        "description": "Application to find restaurant on a bike path",
-        "contact": {
-            "email": "marc-olivier.gagnon4@ulaval.com"
-        }
+        "description": "Application to find restaurant on a bike path"
     },
     "tags": [
         {
-            "name": "user",
-            "description": "Operations available to regular user"
-        },
-        {
-            "name": "front-end",
-            "description": "Operation that is used by the front-end"
+            "name": "Ebike",
+            "description": "Operations available to for the Ebike application"
         }
     ],
     "paths": {
         "/heartbeat": {
             "get": {
-                "tags": ["user"],
-                "summary": "",
-                "operationId": "searchInventory",
+                "tags": ["Ebike"],
+                "summary": "Get some basic information about the application",
                 "produces": ["application/json"],
                 "responses": {
                     "200": {
                         "description": "OK - request successful"
+                    },
+                    "400": {
+                        "description": "Bad Request"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -35,14 +30,53 @@
                 }
             }
         },
-        "/api/statistics": {
+        "/parcours": {
             "get": {
-                "tags": ["front-end"],
-                "summary": "Get statistics for the application",
+                "tags": ["Ebike"],
+                "summary": "Get a parcours",
                 "produces": ["application/json"],
                 "responses": {
                     "200": {
                         "description": "OK - request successful"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/starting-point": {
+            "get": {
+                "tags": ["Ebike"],
+                "summary": "Get a random starting point for a parcours",
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK - request successful"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/type": {
+            "get": {
+                "tags": ["Ebike"],
+                "summary": "Get all the restaurants types available for a parcours",
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK - request successful"
+                    },
+                    "400": {
+                        "description": "Bad Request"
                     },
                     "500": {
                         "description": "Internal Server Error"
