@@ -65,7 +65,7 @@ export default class PathFinding {
                     throw new Error("The path found isn't the right length");
                 }
             } catch (e) {
-                logger.warn(`Unable To Find Path - Trying another finish point: ${e.message}`);
+                // logger.warn(`Unable To Find Path - Trying another finish point: ${e.message}`);
             }
         }
 
@@ -81,7 +81,9 @@ export default class PathFinding {
             const point = turf.point(restaurant.geometry.coordinates);
             const calculatedDistance = turf.pointToLineDistance(point, line);
 
-            restaurantByDistance.push(Object.assign(restaurant, { distance: calculatedDistance }));
+            if(calculatedDistance <= 0.250) {
+                restaurantByDistance.push(Object.assign(restaurant, { distance: calculatedDistance }));
+            }
         });
 
         return _.sortBy(restaurantByDistance, "distance");
