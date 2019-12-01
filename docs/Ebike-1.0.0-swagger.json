@@ -14,12 +14,19 @@
     "paths": {
         "/heartbeat": {
             "get": {
-                "tags": ["Ebike"],
+                "tags": [
+                    "Ebike"
+                ],
                 "summary": "Get some basic information about the application",
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK - request successful"
+                        "description": "OK - request successful",
+                        "schema": {
+                            "$ref": "#/definitions/HeartBeatResponse"
+                        }
                     },
                     "400": {
                         "description": "Bad Request"
@@ -32,12 +39,32 @@
         },
         "/parcours": {
             "get": {
-                "tags": ["Ebike"],
+                "tags": [
+                    "Ebike"
+                ],
                 "summary": "Get a parcours",
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "Starting Point",
+                        "description": "Find a new parcours",
+                        "schema": {
+                            "$ref": "#/definitions/Parcours"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK - request successful"
+                        "description": "OK - request successful",
+                        "schema": {
+                            "$ref": "#/definitions/ParcoursResponse"
+                        }
                     },
                     "400": {
                         "description": "Bad Request"
@@ -50,12 +77,32 @@
         },
         "/starting-point": {
             "get": {
-                "tags": ["Ebike"],
+                "tags": [
+                    "Ebike"
+                ],
                 "summary": "Get a random starting point for a parcours",
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "Starting Point",
+                        "description": "Generate a new Starting Point",
+                        "schema": {
+                            "$ref": "#/definitions/Startingpoint"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK - request successful"
+                        "description": "OK - request successful",
+                        "schema": {
+                            "$ref": "#/definitions/StartingPointResponse"
+                        }
                     },
                     "400": {
                         "description": "Bad Request"
@@ -68,12 +115,19 @@
         },
         "/type": {
             "get": {
-                "tags": ["Ebike"],
+                "tags": [
+                    "Ebike"
+                ],
                 "summary": "Get all the restaurants types available for a parcours",
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK - request successful"
+                        "description": "OK - request successful",
+                        "schema": {
+                            "$ref": "#/definitions/TypeResponse"
+                        }
                     },
                     "400": {
                         "description": "Bad Request"
@@ -85,7 +139,170 @@
             }
         }
     },
-    "host" : "ebike-prod.us-east-1.elasticbeanstalk.com",
-    "basePath" : "/",
-    "schemes": ["http"]
+    "definitions": {
+        "Startingpoint": {
+            "type": "object",
+            "properties": {
+                "maximum_length": {
+                    "type": "integer",
+                    "example": 2000
+                },
+                "type": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "asian",
+                        "indian"
+                    ]
+                }
+            }
+        },
+        "StartingPointResponse": {
+            "type": "object",
+            "properties": {
+                "starting_point": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "example": "Point"
+                        },
+                        "coordinates": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            },
+                            "example": [
+                                -73.56116758338855,
+                                45.54216131478884
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "Parcours": {
+            "type": "object",
+            "properties": {
+                "starting_point": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "example": "Point"
+                        },
+                        "coordinates": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            },
+                            "example": [
+                                -73.56116758338855,
+                                45.54216131478884
+                            ]
+                        }
+                    }
+                },
+                "maximum_length": {
+                    "type": "integer",
+                    "example": 2000
+                },
+                "number_of_stops": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "type": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "asian",
+                        "indian"
+                    ]
+                }
+            }
+        },
+        "ParcoursResponse": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "segment_id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "path": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "example": "LineString"
+                            },
+                            "coordinates": {
+                                "type": "array",
+                                "items": {
+                                    "type": "integer"
+                                },
+                                "example": [
+                                    -73.56116758338855,
+                                    45.54216131478884
+                                ]
+                            }
+                        }
+                    },
+                    "restaurant": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "example": "L'Asie Resto Bar"
+                            },
+                            "type": {
+                                "type": "string",
+                                "example": "asian"
+                            },
+                            "cote": {
+                                "type": "integer",
+                                "example": 4
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "HeartBeatResponse": {
+            "type": "object",
+            "properties": {
+                "nb_restaurants": {
+                    "type": "integer",
+                    "example": 993
+                },
+                "total_path_length": {
+                    "type": "integer",
+                    "example": 863843
+                }
+            }
+        },
+        "TypeResponse": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "example": [
+                "chinese",
+                "seafood",
+                "local",
+                "pizza",
+                "chicken"
+            ]
+        }
+    },
+    "host": "ebike-prod.us-east-1.elasticbeanstalk.com",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ]
 }
