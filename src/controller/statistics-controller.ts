@@ -1,10 +1,14 @@
 import StatisticsRepo from "../data/repository/statistics-repo";
 import { meterToKilo } from "../utils/unitConversion";
+import UserRepo from "../data/repository/user-repo";
 
 export default class StatisticsController {
     private statisticsRepo: StatisticsRepo;
-    constructor(statisticsRepo: StatisticsRepo) {
+    private userRepo: UserRepo;
+
+    constructor(statisticsRepo: StatisticsRepo, userRepo: UserRepo) {
         this.statisticsRepo = statisticsRepo;
+        this.userRepo = userRepo;
     }
 
     async getGlobalStatistics() {
@@ -12,8 +16,8 @@ export default class StatisticsController {
         return {
             nbRestaurants: await this.statisticsRepo.getNumberOfRestaurant(),
             totalPathLength: meterToKilo(totalLength),
-            userConnected: await this.statisticsRepo.getActiveUser(),
-            totalUser: await this.statisticsRepo.getTotalUser(),
+            userConnected: await this.userRepo.getActiveUser(),
+            totalUser: await this.userRepo.getTotalUser(),
         };
     }
 }
