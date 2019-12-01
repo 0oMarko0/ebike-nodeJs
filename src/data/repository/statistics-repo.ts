@@ -23,18 +23,6 @@ export default class StatisticsRepo {
             .next();
     }
 
-    async getActiveUser() {
-        return this.getCollection(collections.user)
-            .find({ isActive: true })
-            .count();
-    }
-
-    async getTotalUser(): Promise<number> {
-        return this.getCollection(collections.user)
-            .find()
-            .count();
-    }
-
     async getNumberOfRestaurant(): Promise<number> {
         return this.getCollection(collections.restaurant)
             .find()

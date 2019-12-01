@@ -3,6 +3,7 @@ import UserRepo from "../data/repository/user-repo";
 import User from "../model/user";
 import { Token } from "./controller";
 import jwt from "jsonwebtoken";
+const uuidv1 = require("uuid/v1");
 
 export default class UserController {
     private userRepo: UserRepo;
@@ -29,7 +30,9 @@ export default class UserController {
         user.password = bcrypt.hashSync(user.password, 10);
         user.isAdmin = false;
         user.isActive = true;
-        user.id = await this.userRepo.create(user);
+        user.id = uuidv1();
+
+        await this.userRepo.create(user);
 
         return this.createToken(user);
     }

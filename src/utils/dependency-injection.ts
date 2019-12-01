@@ -44,7 +44,10 @@ export default class DependencyInjection {
         );
         Registry.register(
             Injectable.StatisticsController,
-            new StatisticsController(Registry.resolve(Injectable.StatisticsRepo)),
+            new StatisticsController(
+                Registry.resolve(Injectable.StatisticsRepo),
+                Registry.resolve(Injectable.UserRepo),
+            ),
         );
         Registry.register(
             Injectable.BikePathController,
