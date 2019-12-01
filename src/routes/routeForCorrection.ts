@@ -30,7 +30,29 @@ router.get("/starting-point", async (req: Request, res: Response) => {
     }
 });
 
+// Must be duplicate for swagger: https://github.com/swagger-api/swagger-ui/issues/2136
+router.post("/starting-point", async (req: Request, res: Response) => {
+    const journeyController: JourneyController = Registry.resolve(Injectable.JourneyController);
+    try {
+        res.send(await journeyController.startingPointForCorrection(req.body));
+    } catch (e) {
+        logger.error(e.message);
+        res.status(400).send(formatError(e.message, req, 400));
+    }
+});
+
 router.get("/parcours", async (req: Request, res: Response) => {
+    const journeyController: JourneyController = Registry.resolve(Injectable.JourneyController);
+    try {
+        res.send(await journeyController.journeyForCorrection(req.body));
+    } catch (e) {
+        logger.error(e.message);
+        res.status(400).send(formatError(e.message, req, 400));
+    }
+});
+
+// Must be duplicate for swagger: https://github.com/swagger-api/swagger-ui/issues/2136
+router.post("/parcours", async (req: Request, res: Response) => {
     const journeyController: JourneyController = Registry.resolve(Injectable.JourneyController);
     try {
         res.send(await journeyController.journeyForCorrection(req.body));
