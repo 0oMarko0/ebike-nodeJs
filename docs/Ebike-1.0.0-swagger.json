@@ -3,7 +3,7 @@
     "info": {
         "version": "1.0.0",
         "title": "Ebike API",
-        "description": "Application to find restaurant on a bike path"
+        "description": "IMPORTANT TO READE. Because Swagger V2 does not support a body in a GET request: https://github.com/swagger-api/swagger-ui/issues/2136 since it follow the RFC 7231 spec: https://tools.ietf.org/html/rfc7231#section-4.3.1 we've decided to duplicate all the endpoints that needed a body. You can still use a GET request for the script that validated our api."
     },
     "tags": [
         {
@@ -38,7 +38,7 @@
             }
         },
         "/parcours": {
-            "get": {
+            "post": {
                 "tags": [
                     "Ebike"
                 ],
@@ -76,7 +76,7 @@
             }
         },
         "/starting-point": {
-            "get": {
+            "post": {
                 "tags": [
                     "Ebike"
                 ],
