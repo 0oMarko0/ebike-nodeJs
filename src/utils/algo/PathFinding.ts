@@ -1,6 +1,7 @@
 import * as turf from "@turf/turf";
 import { Feature } from "@turf/helpers";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const PathFinder = require("geojson-path-finder");
 import Point, { PointGeometry } from "../../model/geometry/point";
 import { Journey, toFeatureCollection } from "../../model/journey";
@@ -17,20 +18,16 @@ interface PathResult {
 }
 
 export default class PathFinding {
-    private readonly startingPointList: _Feature<PointGeometry>[];
     private readonly finishingPointList: _Feature<PointGeometry>[];
     private readonly startingPoint: _Feature<PointGeometry>;
-    private readonly finishingPoint: _Feature<PointGeometry>;
     private readonly restaurantsInArea: Restaurant[];
     private network: any;
 
     constructor(startingArea: Journey[], finishingArea: Journey[], searchArea: Journey[], restaurants: Restaurant[]) {
         if (startingArea.length === 0) throw new Error("Could not found a starting point, try a new location");
 
-        this.startingPointList = this.findAllPoint(startingArea, "#5fd173");
         this.finishingPointList = this.findAllPoint(finishingArea);
         this.startingPoint = this.calculatePoint(startingArea, "#6ad15a");
-        this.finishingPoint = this.calculatePoint(finishingArea, "#a065d1");
         this.restaurantsInArea = restaurants;
 
         this.createNetwork(searchArea);
@@ -61,11 +58,9 @@ export default class PathFinding {
                     featureCollection.add(this.pathResultToFeature(path, distance).toModel);
                     featureCollection.addFromList(toFeaturePoints(this.sortRestaurants(path).slice(0, numberOfStop)));
                     break;
-                } else {
-                    throw new Error("The path found isn't the right length");
                 }
             } catch (e) {
-                // logger.warn(`Unable To Find Path - Trying another finish point: ${e.message}`);
+                logger.warn(`Unable To Find Path - Trying another finish point: ${e.message}`);
             }
         }
 
@@ -81,7 +76,7 @@ export default class PathFinding {
             const point = turf.point(restaurant.geometry.coordinates);
             const calculatedDistance = turf.pointToLineDistance(point, line);
 
-            if(calculatedDistance <= 0.250) {
+            if (calculatedDistance <= 0.25) {
                 restaurantByDistance.push(Object.assign(restaurant, { distance: calculatedDistance }));
             }
         });

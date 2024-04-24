@@ -4,7 +4,6 @@ import JourneyController from "../controller/journey-controller";
 import Registry from "../utils/registry";
 import { Injectable } from "../utils/injectable";
 import BikePathController from "../controller/bike-path-controller";
-import AuthMiddleware from "../middleware/authentication";
 import logger from "../utils/logger";
 import formatError from "../utils/error";
 
@@ -20,17 +19,17 @@ router.get("/starting-point", async (req: Request, res: Response) => {
     }
 });
 
-router.get("/citys", AuthMiddleware, (req: Request, res: Response) => {
+router.get("/citys", (req: Request, res: Response) => {
     const journeyController: JourneyController = Registry.resolve(Injectable.JourneyController);
     res.send(journeyController.getCitys()).status(200);
 });
 
-router.get("/bike-path/:city", AuthMiddleware, async (req: Request, res: Response) => {
+router.get("/bike-path/:city", async (req: Request, res: Response) => {
     const bikePathController: BikePathController = Registry.resolve(Injectable.BikePathController);
     res.send(await bikePathController.getBikePathForCity(req.params.city));
 });
 
-router.post("/", AuthMiddleware, async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
     const journeyController: JourneyController = Registry.resolve(Injectable.JourneyController);
     try {
         res.send(await journeyController.createAJourney(req.body));

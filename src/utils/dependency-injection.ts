@@ -2,8 +2,6 @@ import logger from "./logger";
 import Registry from "./registry";
 import { Injectable } from "./injectable";
 
-import UserRepo from "../data/repository/user-repo";
-import UserController from "../controller/user-controller";
 import RestaurantController from "../controller/restaurant-controller";
 import RestaurantRepo from "../data/repository/restaurant-repo";
 import JourneyRepo from "../data/repository/journey-repo";
@@ -21,7 +19,6 @@ export default class DependencyInjection {
     }
 
     private initialiseRepository() {
-        Registry.register(Injectable.UserRepo, new UserRepo());
         Registry.register(Injectable.RestaurantRepo, new RestaurantRepo());
         Registry.register(Injectable.JourneyRepo, new JourneyRepo());
         Registry.register(Injectable.BikePathRepo, new BikePathRepo());
@@ -29,7 +26,6 @@ export default class DependencyInjection {
     }
 
     private initialiseController() {
-        Registry.register(Injectable.UserController, new UserController(Registry.resolve(Injectable.UserRepo)));
         Registry.register(
             Injectable.RestaurantController,
             new RestaurantController(Registry.resolve(Injectable.RestaurantRepo)),
@@ -44,10 +40,7 @@ export default class DependencyInjection {
         );
         Registry.register(
             Injectable.StatisticsController,
-            new StatisticsController(
-                Registry.resolve(Injectable.StatisticsRepo),
-                Registry.resolve(Injectable.UserRepo),
-            ),
+            new StatisticsController(Registry.resolve(Injectable.StatisticsRepo)),
         );
         Registry.register(
             Injectable.BikePathController,

@@ -31,11 +31,11 @@ export class FeatureCollection {
 
     addFromList(featureList: any[], map?: Function) {
         if (map) {
-            featureList.forEach(feature => {
+            featureList.forEach((feature) => {
                 this.features.push(map(feature));
             });
         } else {
-            featureList.forEach(feature => {
+            featureList.forEach((feature) => {
                 this.features.push(feature);
             });
         }

@@ -12,6 +12,7 @@ import { LINE_STRING } from "../model/geometry/line-string";
 import { restrainArea } from "../utils/montrealArea";
 import logger from "../utils/logger";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const randomPointsOnPolygon = require("random-points-on-polygon");
 
 export default class JourneyController {
@@ -45,13 +46,13 @@ export default class JourneyController {
                 });
 
                 if (journey.length === 0) {
-                    this.startingPointForCorrection(body);
+                    await this.startingPointForCorrection(body);
                 } else {
                     found = true;
                 }
             } catch (e) {
                 logger.info("Could not find a Journey for that random point, trying a new one");
-                this.startingPointForCorrection(body);
+                await this.startingPointForCorrection(body);
             }
         }
 

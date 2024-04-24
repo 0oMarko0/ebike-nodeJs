@@ -11,10 +11,10 @@ export default class RestaurantController {
     }
 
     async getRestaurantType() {
-        let restaurantType: string[] = [];
+        const restaurantType: string[] = [];
         const result = await this.restaurantRepo.getRestaurantType();
 
-        result.forEach(item => {
+        result.forEach((item) => {
             item._id.forEach((type: string) => {
                 if (this.notInt(type, restaurantType)) {
                     restaurantType.push(type);
@@ -51,7 +51,7 @@ export default class RestaurantController {
 
     private notInt(value: any, array: any[]) {
         let notInTheArray = true;
-        array.forEach(element => {
+        array.forEach((element) => {
             if (element === value) {
                 notInTheArray = false;
             }

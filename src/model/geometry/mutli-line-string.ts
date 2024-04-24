@@ -26,7 +26,7 @@ export default class MultiLineString {
     toLineString = (): LineStringGeometry => {
         return {
             type: LINE_STRING,
-            coordinates: [].concat.apply([], this.coordinates)
-        }
-    }
+            coordinates: [].concat.apply([], this.coordinates),
+        };
+    };
 }

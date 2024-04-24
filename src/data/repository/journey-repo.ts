@@ -13,11 +13,13 @@ export default class JourneyRepo extends Repo {
                 $nearSphere: {
                     $geometry: point.toGeometry,
                     $maxDistance: max,
-                    $minDistance: min
-                }
-            }
+                    $minDistance: min,
+                },
+            },
         };
 
-        return await this.getCollection().find(query).toArray();
+        return await this.getCollection()
+            .find(query)
+            .toArray();
     }
 }

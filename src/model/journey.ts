@@ -17,6 +17,10 @@ export interface Journey {
     restaurants: Restaurant[];
 }
 
+const flattenCoordinates = (coordinates: number[][][]): number[][] => {
+    return [].concat.apply([], coordinates);
+};
+
 export const toLineStringFeature = (journey: Journey): _Feature<LineStringGeometry> => {
     return new _Feature<LineStringGeometry>(
         new LineString(flattenCoordinates(journey.geometry.coordinates)).toGeometry,
@@ -35,8 +39,4 @@ export const toFeatureCollection = (journey: Journey[]): FeatureCollectionModel 
     });
 
     return featureCollection.toModel;
-};
-
-const flattenCoordinates = (coordinates: number[][][]): number[][] => {
-    return [].concat.apply([], coordinates);
 };

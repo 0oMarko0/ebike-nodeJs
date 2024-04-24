@@ -1,5 +1,6 @@
 import * as path from "path";
 import appRoot from "app-root-path";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const fs = require("fs");
 
 const BASE_PATH = path.join(`${appRoot}`, "src", "data", "seed");

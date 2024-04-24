@@ -66,7 +66,8 @@ export default class Repo {
             await this.collection.drop();
         } catch (e) {
             logger.error(`Mongo Error: ${e.codeName}`);
-        }}
+        }
+    }
 
     private toObjectId(id: string | ObjectId): ObjectId {
         if (_.isString(id) && ObjectId.isValid(id)) {
@@ -77,8 +78,8 @@ export default class Repo {
     }
 
     private stripDocument(document: any) {
-        if (_.has(document, 'id')) delete document["id"];
-        if(_.has(document, '_id')) delete document["_id"];
+        if (_.has(document, "id")) delete document["id"];
+        if (_.has(document, "_id")) delete document["_id"];
 
         return document;
     }

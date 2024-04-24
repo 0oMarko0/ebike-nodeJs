@@ -1,7 +1,6 @@
 import ReadFile from "../../../utils/readFile";
 import BikePathRepo from "../../repository/bike-path";
 import logger from "../../../utils/logger";
-import { log } from "util";
 
 export default class BikePathSeed extends ReadFile {
     private bikePathRepo: BikePathRepo;

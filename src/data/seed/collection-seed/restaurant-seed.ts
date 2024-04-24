@@ -34,18 +34,17 @@ export default class RestaurantSeed extends ReadFile {
     };
 
     private documentIsValid(document: any): boolean {
-        const isvalid =
+        return (
             _.has(document, "lat") &&
             _.has(document, "lon") &&
             _.has(document, "tags.cuisine") &&
-            _.has(document, "tags.name");
-
-        return isvalid;
+            _.has(document, "tags.name")
+        );
     }
 
     private translate(row: any) {
-        let address: any = {};
-        for (let key in row.tags) {
+        const address: any = {};
+        for (const key in row.tags) {
             if (key.includes("addr")) {
                 address[this.cleanAddress(key)] = row.tags[key];
                 Object.assign(row, { address });

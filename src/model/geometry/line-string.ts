@@ -26,7 +26,7 @@ export default class LineString {
     toMultiLineString(): MultiLineStringGeometry {
         return {
             type: MULTI_LINE_STRING,
-            coordinates: [this.coordinates]
-        }
+            coordinates: [this.coordinates],
+        };
     }
 }
