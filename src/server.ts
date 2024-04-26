@@ -8,7 +8,7 @@ import { buildIndex } from "./data/utils";
 
 const dip = new DependencyInjection();
 
-const server = new Promise((resolve, reject) => {
+const server = new Promise<void>((resolve, reject) => {
     MongoDB.connect()
         .then(async () => {
             dip.bootstrap();
