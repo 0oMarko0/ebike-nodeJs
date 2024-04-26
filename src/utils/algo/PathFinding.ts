@@ -14,7 +14,7 @@ import _ from "lodash";
 
 interface PathResult {
     path: number[][];
-    edgeDatas: any[];
+    edgeData: any[];
 }
 
 export default class PathFinding {

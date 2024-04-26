@@ -13,7 +13,7 @@ export default class MongoDB {
     }
 
     static async connect() {
-        this.client = await MongoClient.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+        this.client = await MongoClient.connect(MONGO_URL);
         this.db = this.client.db(DATA_BASE_NAME);
         logger.info(`MONGO connected on ${MONGO_URL}/${DATA_BASE_NAME}`);
     }

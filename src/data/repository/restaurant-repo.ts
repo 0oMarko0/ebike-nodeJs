@@ -1,6 +1,7 @@
 import Repo from "./repo";
 import collections from "../utils/mongoCollection";
 import Point from "../../model/geometry/point";
+import { Restaurant } from "../../model/restaurant";
 
 export default class RestaurantRepo extends Repo {
     constructor() {
@@ -19,7 +20,7 @@ export default class RestaurantRepo extends Repo {
             .toArray();
     }
 
-    async getRestaurantNearAPoint(geoPoint: Point, maxDistance: number, filter?: any) {
+    async getRestaurantNearAPoint(geoPoint: Point, maxDistance: number, filter?: any): Promise<Restaurant[]> {
         const query = {
             geometry: {
                 $nearSphere: {
@@ -32,7 +33,7 @@ export default class RestaurantRepo extends Repo {
         if (filter) Object.assign(query, filter);
 
         return await this.getCollection()
-            .find(query)
+            .find<Restaurant>(query)
             .toArray();
     }
 }

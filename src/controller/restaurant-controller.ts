@@ -1,7 +1,7 @@
 import RestaurantRepo from "../data/repository/restaurant-repo";
 import _ from "lodash";
 import Point from "../model/geometry/point";
-import { toFeaturePoints } from "../model/restaurant";
+import { Restaurant, toFeaturePoints } from "../model/restaurant";
 import { FeatureCollection } from "../model/feature-collection";
 
 export default class RestaurantController {
@@ -36,7 +36,7 @@ export default class RestaurantController {
         return featureCollection.toModel;
     }
 
-    async getRestaurant(point: Point, radius: any, query?: any) {
+    async getRestaurant(point: Point, radius: any, query?: any): Promise<Restaurant[]> {
         const filter = this.buildFilter(query);
         return await this.restaurantRepo.getRestaurantNearAPoint(point, parseInt(radius), filter);
     }
