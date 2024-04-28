@@ -17,19 +17,13 @@ const loggerFormat = combine(
 );
 
 const options = {
-    file: {
-        filename: `${appRoot}/logs/app.log`,
-        handleExceptions: true,
-        maxsize: 5242880,
-        maxFiles: 5,
-    },
     console: {
         format: loggerFormat,
     },
 };
 
 const logger: Logger = winston.createLogger({
-    transports: [new transports.File(options.file), new transports.Console(options.console)],
+    transports: [new transports.Console(options.console)],
     exitOnError: false,
 });
 
