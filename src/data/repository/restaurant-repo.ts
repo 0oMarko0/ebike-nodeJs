@@ -1,6 +1,7 @@
 import Repo from "./repo";
 import collections from "../utils/mongoCollection";
 import Point from "../../model/geometry/point";
+import logger from "../../utils/logger";
 
 export default class RestaurantRepo extends Repo {
     constructor() {

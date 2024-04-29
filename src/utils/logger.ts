@@ -9,6 +9,7 @@ const loggerFormat = combine(
     winston.format.timestamp(),
     winston.format.align(),
     winston.format.printf(info => {
+        // @ts-ignore
         const { timestamp, level, message, ...args } = info;
 
         const ts = timestamp.slice(0, 19).replace("T", " ");
